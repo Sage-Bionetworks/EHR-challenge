@@ -85,7 +85,7 @@ requirements:
                                input_dir:'/train:ro',
                                model_dir:'/model:rw'}
             #All mounted volumes here in a list
-            all_volumes = [output_dir,input_dir]
+            all_volumes = [scratch_dir,input_dir,model_dir]
             #Mount volumes
             volumes = {}
             for vol in all_volumes:
@@ -105,7 +105,7 @@ requirements:
             if container is None:
               #Run as detached, logs will stream below
               try:
-                container = client.containers.run(docker_image,detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
+                container = client.containers.run(docker_image, 'bash "/app/train.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
@@ -161,7 +161,7 @@ requirements:
 
             #Try to remove the image
             try:
-              client.images.remove(docker_image, force=True))
+              client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
 
