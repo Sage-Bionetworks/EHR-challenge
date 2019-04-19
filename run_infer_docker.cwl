@@ -37,16 +37,10 @@ arguments:
   - valueFrom: $(inputs.parentid)
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
-    prefix: -c
-  
-  #Docker run has access to the local file system, so this path is the input directory locally
-  - valueFrom: /Users/ThomasY/Documents/
+    prefix: -c  
+  - valueFrom: /Users/ThomasY/sage_projects/DREAM/EHR-challenge/synpuf_clean/validation
     prefix: -i
-  #- valueFrom: /home/ubuntu
-  #  prefix: -i
-  #No need to pass in output because you should be getting that information in the script
-  #- valueFrom: $((runtime.tmpdir).split('/').slice(0,-1).join("/"))/$((runtime.outdir).split("/").slice(-4).join("/"))
-  #  prefix: -o
+
 
 requirements:
   - class: InitialWorkDirRequirement
