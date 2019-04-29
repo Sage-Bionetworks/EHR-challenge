@@ -33,6 +33,7 @@ requirements:
           import argparse
           import os
           import json
+          import pandas as pd
           parser = argparse.ArgumentParser()
           parser.add_argument("-r", "--results", required=True, help="validation results")
           parser.add_argument("-e", "--entity_type", required=True, help="synapse entity type downloaded")
@@ -44,12 +45,13 @@ requirements:
               prediction_file_status = "INVALID"
               invalid_reasons = ['Expected FileEntity type but found ' + args.entity_type]
           else:
-              with open(args.submission_file,"r") as sub_file:
-                  message = sub_file.read()
+              #with open(args.submission_file,"r") as sub_file:
+              #    message = sub_file.read()
+              subdf = pd.read_csv(args.submission_file)
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
-              if not message.startswith("test"):
-                  invalid_reasons.append("Submission must have test column")
+              if subdf.get("person_id") is None:
+                  invalid_reasons.append("Submission must have person_id column")
                   prediction_file_status = "INVALID"
           result = {'prediction_file_errors':"\n".join(invalid_reasons),'prediction_file_status':prediction_file_status}
           with open(args.results, 'w') as o:
