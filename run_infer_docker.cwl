@@ -23,6 +23,10 @@ inputs:
     type: string
   - id: synapse_config
     type: File
+  - id: model
+    type:
+      type: array
+      items: File
 
 arguments: 
   - valueFrom: runDocker.py
@@ -40,7 +44,8 @@ arguments:
     prefix: -c  
   - valueFrom: /Users/ThomasY/sage_projects/DREAM/EHR-challenge/synpuf_clean/validation
     prefix: -i
-
+  - valueFrom: $(inputs.model)
+    prefix: -m
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -56,6 +61,7 @@ requirements:
           import logging
           import synapseclient
           import time
+          import shutil
           from threading import Event
           import signal
           from functools import partial
@@ -79,12 +85,24 @@ requirements:
             #These are the volumes that you want to mount onto your docker container
             output_dir = os.getcwd()
             input_dir = args.input_dir
+            model_files = args.model_files
+
+            scratch_dir = os.path.join(os.getcwd(), "scratch")
+            model_dir = os.path.join(os.getcwd(), "model")
+            os.mkdir(model_dir)
+
+            for model_file in model_files:
+              shutil.copy(model_file, model_dir)
+
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
-            mounted_volumes = {output_dir:'/output:rw',
-                               input_dir:'/input:ro'}
+            mounted_volumes = {scratch_dir:'/scratch:rw',
+                               input_dir:'/validation:ro',
+                               model_dir:'/model:rw',
+                               output_dir:'/output:rw'}
+
             #All mounted volumes here in a list
-            all_volumes = [output_dir,input_dir]
+            all_volumes = [scratch_dir,input_dir,model_dir,output_dir]
             #Mount volumes
             volumes = {}
             for vol in all_volumes:
@@ -104,7 +122,7 @@ requirements:
             if container is None:
               #Run as detached, logs will stream below
               try:
-                container = client.containers.run(docker_image,detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
+                container = client.containers.run(docker_image, 'bash "/app/infer.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
@@ -160,7 +178,7 @@ requirements:
 
             #Try to remove the image
             try:
-              client.images.remove(docker_image, force=True))
+              client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
 
@@ -187,6 +205,7 @@ requirements:
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
+            parser.add_argument("-m","--model_files", required=True, help="Model files", nargs='+')
             args = parser.parse_args()
             client = docker.from_env()
             docker_image = args.docker_repository + "@" + args.docker_digest

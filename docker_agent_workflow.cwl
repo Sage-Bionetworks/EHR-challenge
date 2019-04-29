@@ -42,7 +42,7 @@ steps:
     out: []
 
   get_docker_submission:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/get_submission_docker.cwl
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/develop/get_submission_docker.cwl
     in:
       - id: submissionid
         source: "#submissionId"
@@ -91,8 +91,8 @@ steps:
       - id: docker_registry
       - id: docker_authentication
 
-  run_docker:
-    run: run_docker.cwl
+  run_docker_train:
+    run: run_training_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
@@ -111,13 +111,37 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
     out:
+      - id: model
+
+  run_docker_infer:
+    run: run_infer_docker.cwl
+    in:
+      - id: docker_repository
+        source: "#get_docker_submission/docker_repository"
+      - id: docker_digest
+        source: "#get_docker_submission/docker_digest"
+      - id: submissionid
+        source: "#submissionId"
+      - id: docker_registry
+        source: "#get_docker_config/docker_registry"
+      - id: docker_authentication
+        source: "#get_docker_config/docker_authentication"
+      - id: status
+        source: "#validate_docker/status"
+      - id: parentid
+        source: "#submitterUploadSynId"
+      - id: synapse_config
+        source: "#synapseConfig"
+      - id: model
+        source: "#run_docker_train/model"
+    out:
       - id: predictions
 
   upload_results:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/upload_to_synapse.cwl
     in:
       - id: infile
-        source: "#run_docker/predictions"
+        source: "#run_docker_infer/predictions"
       - id: parentid
         source: "#adminUploadSynId"
       - id: used_entity
@@ -150,7 +174,7 @@ steps:
     run: validate.cwl
     in:
       - id: inputfile
-        source: "#run_docker/predictions"
+        source: "#run_docker_infer/predictions"
     out:
       - id: results
       - id: status
@@ -200,7 +224,7 @@ steps:
     run: score.cwl
     in:
       - id: inputfile
-        source: "#run_docker/predictions"
+        source: "#run_docker_infer/predictions"
       - id: status 
         source: "#validation/status"
       - id: goldstandard

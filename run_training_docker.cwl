@@ -203,7 +203,9 @@ requirements:
 
 
 outputs:
-  predictions:
-    type: File
+  model:
+    type:
+      type: array
+      items: File
     outputBinding:
-      glob: predictions.csv
+      glob: model/*
