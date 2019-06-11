@@ -41,9 +41,8 @@ arguments:
   - valueFrom: $(inputs.parentid)
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
-    prefix: -c  
-  #- valueFrom: /Users/ThomasY/sage_projects/DREAM/EHR-challenge/synpuf_clean/validation
-  - valueFrom: /home/tyu/synpuf_clean/validation
+    prefix: -c
+  - valueFrom: /data/users/trberg/EHR_DREAM_Challenge/data/synpuf/Phase1/test/
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
