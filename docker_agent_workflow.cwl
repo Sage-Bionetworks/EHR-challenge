@@ -218,7 +218,7 @@ steps:
     in:
       - id: synapseid
         #This is a dummy syn id, replace when you use your own workflow
-        valueFrom: "syn18081597"
+        valueFrom: "syn19005683"
       - id: synapse_config
         source: "#synapseConfig"
     out:
