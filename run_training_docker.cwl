@@ -76,9 +76,14 @@ requirements:
             docker_image = args.docker_repository + "@" + args.docker_digest
 
             #These are the volumes that you want to mount onto your docker container
+            print (os.getcwd())
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
             input_dir = args.input_dir
+
+            print (model_dir)
+            print (input_dir)
+
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:rw',
