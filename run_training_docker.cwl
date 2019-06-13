@@ -100,6 +100,7 @@ requirements:
             container=None
             errors = None
             for cont in client.containers.list(all=True):
+              print (cont)
               if args.submissionid in cont.name:
                 #Must remove container if the container wasn't killed properly
                 if cont.status == "exited":
