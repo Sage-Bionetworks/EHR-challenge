@@ -83,7 +83,7 @@ requirements:
             docker_image = args.docker_repository + "@" + args.docker_digest
 
             #These are the volumes that you want to mount onto your docker container
-            output_dir = os.getcwd()
+            output_dir = os.path.join(os.getcwd(), "output")
             input_dir = args.input_dir
             model_files = args.model_files
 
