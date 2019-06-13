@@ -72,6 +72,9 @@ requirements:
             syn.login()
 
             client = docker.from_env()
+            print ("this is the docker client")
+            print (client)
+
             #Add docker.config file
             docker_image = args.docker_repository + "@" + args.docker_digest
 
