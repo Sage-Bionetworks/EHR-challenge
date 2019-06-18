@@ -69,27 +69,23 @@ requirements:
             if args.status == "INVALID":
               raise Exception("Docker image is invalid")
 
-            r = requests.get('http://google.com/')
-            print (r.status_code)
-
             syn = synapseclient.Synapse(configPath=args.synapse_config)
             syn.login()
 
             client = docker.from_env()
-            print ("this is the docker client")
-            print (client)
 
             #Add docker.config file
             docker_image = args.docker_repository + "@" + args.docker_digest
 
+            print ("------------DEBUG INFORMATION---------------")
+            print (docker_image)
+            print (args.synapse_config)
+            print ("--------------------------------------------")
+
             #These are the volumes that you want to mount onto your docker container
-            print (os.getcwd())
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
             input_dir = args.input_dir
-
-            print (model_dir)
-            print (input_dir)
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
@@ -107,7 +103,6 @@ requirements:
             container=None
             errors = None
             for cont in client.containers.list(all=True):
-              print (cont)
               if args.submissionid in cont.name:
                 #Must remove container if the container wasn't killed properly
                 if cont.status == "exited":
