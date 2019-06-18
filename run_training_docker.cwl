@@ -55,6 +55,7 @@ requirements:
           import logging
           import synapseclient
           import time
+          import requests
           from threading import Event
           import signal
           from functools import partial
@@ -67,6 +68,9 @@ requirements:
           def main(args):
             if args.status == "INVALID":
               raise Exception("Docker image is invalid")
+
+            r = requests.get('http://google.com/')
+            print (r.text)
 
             syn = synapseclient.Synapse(configPath=args.synapse_config)
             syn.login()
