@@ -70,7 +70,7 @@ requirements:
               raise Exception("Docker image is invalid")
 
             r = requests.get('http://google.com/')
-            print (r.text)
+            print (r.content)
 
             syn = synapseclient.Synapse(configPath=args.synapse_config)
             syn.login()
