@@ -38,7 +38,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/users/trberg/EHR_DREAM_Challenge/data/synpuf/
+  - valueFrom: /data/common/dream/data/synpuf/
     prefix: -i
 
 requirements:
