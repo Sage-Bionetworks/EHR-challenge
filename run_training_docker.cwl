@@ -74,6 +74,9 @@ requirements:
 
             client = docker.from_env()
 
+            import getpass
+            print (getpass.getuser())
+
             #Add docker.config file
             docker_image = args.docker_repository + "@" + args.docker_digest
 
