@@ -49,6 +49,8 @@ requirements:
           {"auths": {"$(inputs.docker_registry)": {"auth": "$(inputs.docker_authentication)"}}}
       - entryname: runDocker.py
         entry: |
+          from __future__ import print_function
+          import sys
           import docker
           import argparse
           import os
@@ -64,9 +66,6 @@ requirements:
           logger.setLevel(logging.INFO)
 
           exit = Event()
-
-          from __future__ import print_function
-          import sys
 
           def eprint(*args, **kwargs):
               print(*args, file=sys.stderr, **kwargs)
