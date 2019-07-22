@@ -65,6 +65,12 @@ requirements:
 
           exit = Event()
 
+          from __future__ import print_function
+          import sys
+
+          def eprint(*args, **kwargs):
+              print(*args, file=sys.stderr, **kwargs)
+
           def main(args):
             if args.status == "INVALID":
               raise Exception("Docker image is invalid")
@@ -80,23 +86,18 @@ requirements:
             #Add docker.config file
             docker_image = args.docker_repository + "@" + args.docker_digest
 
-            print ("------------DEBUG INFORMATION---------------")
-            print (docker_image)
-            print (args.synapse_config)
-            print ("--------------------------------------------")
-
             #These are the volumes that you want to mount onto your docker container
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
             input_dir = args.input_dir
 
-            print ("------------DEBUG INFORMATION---------------")
-            print (docker_image)
-            print (args.synapse_config)
-            print (scratch_dir)
-            print (model_dir)
-            print (input_dir)
-            print ("--------------------------------------------")
+            eprint ("------------DEBUG INFORMATION---------------")
+            eprint (docker_image)
+            eprint (args.synapse_config)
+            eprint (scratch_dir)
+            eprint (model_dir)
+            eprint (input_dir)
+            eprint ("--------------------------------------------")
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
