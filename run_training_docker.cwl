@@ -86,8 +86,9 @@ requirements:
             docker_image = args.docker_repository + "@" + args.docker_digest
 
             #These are the volumes that you want to mount onto your docker container
-            scratch_dir = os.path.join(os.getcwd(), "scratch")
-            model_dir = os.path.join(os.getcwd(), "model")
+            dir = "/data/common/DREAM Challenge/data/submissions"
+            scratch_dir = os.path.join(dir, "scratch")
+            model_dir = os.path.join(dir, "model")
             input_dir = args.input_dir
 
             eprint ("------------DEBUG INFORMATION---------------")
@@ -101,7 +102,7 @@ requirements:
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:rw',
-                               input_dir:'/train:ro',
+                               input_dir:'/train:rw',
                                model_dir:'/model:rw'}
             #All mounted volumes here in a list
             all_volumes = [scratch_dir,input_dir,model_dir]
