@@ -222,8 +222,6 @@ requirements:
 
 outputs:
   predictions:
-    type:
-      type: array
-      items: File
+    type: File
     outputBinding:
-      glob: output/*
+      glob: predictions.csv
