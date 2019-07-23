@@ -91,13 +91,13 @@ requirements:
             model_dir = os.path.join(os.getcwd(), "model")
             input_dir = args.input_dir
 
-            eprint ("------------DEBUG INFORMATION---------------")
+            """eprint ("------------DEBUG INFORMATION---------------")
             eprint (docker_image)
             eprint (args.synapse_config)
             eprint (scratch_dir)
             eprint (model_dir)
             eprint (input_dir)
-            eprint ("--------------------------------------------")
+            eprint ("--------------------------------------------")"""
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
