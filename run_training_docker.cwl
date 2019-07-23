@@ -38,7 +38,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: synpuf_train #/data/common/dream/data/synpuf/train
+  - valueFrom: uw_train #/data/common/dream/data/synpuf/train
     prefix: -i
 
 requirements:

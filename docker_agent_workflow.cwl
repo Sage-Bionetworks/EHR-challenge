@@ -185,6 +185,8 @@ steps:
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
+      - id: goldstandard
+        source: "#download_goldstandard/filepath"
     out:
       - id: results
       - id: status

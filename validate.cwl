@@ -18,6 +18,8 @@ inputs:
     type: string
   - id: synapse_config
     type: File
+  - id: goldstandard
+    type: File
 
 arguments:
   - valueFrom: validate.py
@@ -33,6 +35,8 @@ arguments:
     prefix: -p
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
+  - valueFrom: $(inputs.goldstandard.path)
+    prefix: -g
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -41,16 +45,11 @@ requirements:
       - entryname: validate.py
         entry: |
           #!/usr/bin/env python
-          from __future__ import print_function
-          import sys
           import synapseclient
           import argparse
           import os
           import json
           import pandas as pd
-
-          def eprint(*args, **kwargs):
-            print(*args, file=sys.stderr, **kwargs)
 
           parser = argparse.ArgumentParser()
           parser.add_argument("-r", "--results", required=True, help="validation results")
@@ -59,6 +58,7 @@ requirements:
           parser.add_argument("-i", "--submissionid", help="Submission ID")
           parser.add_argument("-p", "--parentid", help="Parent ID")
           parser.add_argument("-c", "--synapse_config", help="Parent ID")
+          parser.add_argument("-g", "--goldstandard", required=True, help="Goldstandard for scoring")
 
           args = parser.parse_args()
 
@@ -79,11 +79,20 @@ requirements:
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
 
-              subdf.to_csv(log_filename, index=False)
 
               if subdf.get("person_id") is None:
-                  invalid_reasons.append("Submission must have person_id column")
-                  prediction_file_status = "INVALID"
+                invalid_reasons.append("Submission must have 'person_id' column")
+                prediction_file_status = "INVALID"
+              if subdf.get("score") is None:
+                invalid_reasons.append("Submission must have 'score' column")
+                prediction_file_status = "INVALID"
+              
+              goldstandard = pd.read_csv(args.goldstandard)
+              evaluation = goldstandard.merge(subdf, how="inner", on="person_id")
+              
+              if evaluation.shape[0] < goldstandard.shape[0]:
+                invalid_reasons.append("Submission does not have scores for all goldstandard patients.")
+                prediction_file_status = "INVALID"
           result = {'prediction_file_errors':"\n".join(invalid_reasons),'prediction_file_status':prediction_file_status}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
