@@ -179,6 +179,8 @@ steps:
       # From the docker run command
       - id: entity_type
         valueFrom: "none"
+      - id: submissionid
+        source: "#submissionId"
     out:
       - id: results
       - id: status
