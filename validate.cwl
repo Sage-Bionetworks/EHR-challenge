@@ -61,8 +61,7 @@ requirements:
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
 
-              log_text = 
-              f"""---------------DEBUGGING-----------------
+              log_text = f"""---------------DEBUGGING-----------------
               content of prediction file
               {subdf}
               
