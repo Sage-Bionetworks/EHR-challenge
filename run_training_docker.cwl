@@ -38,7 +38,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/common/dream/data/synpuf/train
+  - valueFrom: synpuf_train #/data/common/dream/data/synpuf/train
     prefix: -i
 
 requirements:
@@ -102,7 +102,7 @@ requirements:
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
-                               "synpuf_train":'/train:ro',
+                               input_dir:'/train:ro',
                                model_dir:'/model:z'}
             #All mounted volumes here in a list
             all_volumes = [scratch_dir,input_dir,model_dir]

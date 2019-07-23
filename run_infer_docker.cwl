@@ -42,7 +42,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/common/dream/data/synpuf/validation
+  - valueFrom: synpuf_validation #/data/common/dream/data/synpuf/validation
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
@@ -97,7 +97,7 @@ requirements:
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
-                               'synpuf_validation':'/infer:ro',
+                               input_dir:'/infer:ro',
                                model_dir:'/model:z',
                                output_dir:'/output:z'}
 
