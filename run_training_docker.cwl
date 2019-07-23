@@ -89,7 +89,7 @@ requirements:
             dir = "/data/common/DREAM Challenge/data/submissions"
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
-            input_dir = args.input_dir
+            #input_dir = args.input_dir
 
             """eprint ("------------DEBUG INFORMATION---------------")
             eprint (docker_image)
@@ -102,7 +102,7 @@ requirements:
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
-                               input_dir:'/train:z,ro',
+                               "synpuf_train":'/train:ro',
                                model_dir:'/model:z'}
             #All mounted volumes here in a list
             all_volumes = [scratch_dir,input_dir,model_dir]

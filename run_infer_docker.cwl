@@ -97,7 +97,7 @@ requirements:
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
-                               input_dir:'/infer:ro,z',
+                               'synpuf_validation':'/infer:ro',
                                model_dir:'/model:z',
                                output_dir:'/output:z'}
 
