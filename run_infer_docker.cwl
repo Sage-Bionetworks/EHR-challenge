@@ -153,7 +153,7 @@ requirements:
                 log_file.write(log_text)
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
-              if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
+              if statinfo.st_size > 0: # and statinfo.st_size/1000.0 <= 50
                 ent = synapseclient.File(log_filename, parent = args.parentid)
                 try:
                   logs = syn.store(ent)
