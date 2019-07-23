@@ -181,6 +181,8 @@ steps:
         valueFrom: "none"
       - id: submissionid
         source: "#submissionId"
+      - id: parentid
+        source: "#submitterUploadSynId"
     out:
       - id: results
       - id: status

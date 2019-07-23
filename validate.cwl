@@ -14,6 +14,8 @@ inputs:
     type: File?
   - id: submissionid
     type: int
+  - id: parentid
+    type: string
 
 arguments:
   - valueFrom: validate.py
@@ -25,6 +27,8 @@ arguments:
     prefix: -e
   - valueFrom: $(inputs.submissionid)
     prefix: -i
+  - valueFrom: $(inputs.parentid)
+    prefix: -p
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -49,6 +53,7 @@ requirements:
           parser.add_argument("-e", "--entity_type", required=True, help="synapse entity type downloaded")
           parser.add_argument("-s", "--submission_file", help="Submission File")
           parser.add_argument("-i", "--submissionid", help="Submission ID")
+          parser.add_argument("-p", "--parentid", help="Parent ID")
 
           args = parser.parse_args()
 
