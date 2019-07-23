@@ -57,6 +57,9 @@ requirements:
 
           args = parser.parse_args()
 
+          syn = synapseclient.Synapse(configPath=args.synapse_config)
+          syn.login()
+
           #Create the logfile
           log_filename = args.submissionid + "_validation_log.txt"
           open(log_filename,'w').close()
