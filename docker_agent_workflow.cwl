@@ -217,8 +217,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/download_from_synapse.cwl
     in:
       - id: synapseid
-        #This is a dummy syn id, replace when you use your own workflow
-        valueFrom: "syn19005683"
+        valueFrom: "syn20545685"
       - id: synapse_config
         source: "#synapseConfig"
     out:

@@ -29,11 +29,17 @@ requirements:
       - entryname: validate.py
         entry: |
           #!/usr/bin/env python
+          from __future__ import print_function
+          import sys
           import synapseclient
           import argparse
           import os
           import json
           import pandas as pd
+
+          def eprint(*args, **kwargs):
+                print(*args, file=sys.stderr, **kwargs)
+
           parser = argparse.ArgumentParser()
           parser.add_argument("-r", "--results", required=True, help="validation results")
           parser.add_argument("-e", "--entity_type", required=True, help="synapse entity type downloaded")
@@ -50,6 +56,12 @@ requirements:
               subdf = pd.read_csv(args.submission_file)
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
+
+              eprint("\n\n---------------DEBUGGING-----------------")
+              eprint (subdf)
+              eprint (args.submission_file)
+              eprint("---------------------------------------------\n\n")
+
               if subdf.get("person_id") is None:
                   invalid_reasons.append("Submission must have person_id column")
                   prediction_file_status = "INVALID"

@@ -32,6 +32,9 @@ requirements:
       - entryname: score.py
         entry: |
           #!/usr/bin/env python
+          from __future__ import print_function
+          import sys
+          import pandas as pd
           import synapseclient
           import argparse
           import os
@@ -42,8 +45,14 @@ requirements:
           parser.add_argument("-r", "--results", required=True, help="Scoring results")
           parser.add_argument("-g", "--goldstandard", required=True, help="Goldstandard for scoring")
 
+          def eprint(*args, **kwargs):
+              print(*args, file=sys.stderr, **kwargs)
+
           args = parser.parse_args()
           if args.status == "VALIDATED":
+            eprint("\n\n---------------DEBUGGING-----------------")
+            eprint (args.goldstandard)
+            eprint (args.submissionfile)
             prediction_file_status = "SCORED"
             score = 3
           else:
