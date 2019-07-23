@@ -89,7 +89,7 @@ requirements:
             dir = "/data/common/DREAM Challenge/data/submissions"
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
-            #input_dir = args.input_dir
+            input_dir = args.input_dir
 
             """eprint ("------------DEBUG INFORMATION---------------")
             eprint (docker_image)
