@@ -46,7 +46,11 @@ requirements:
           parser.add_argument("-s", "--submission_file", help="Submission File")
 
           args = parser.parse_args()
-          
+
+          #Create the logfile
+          log_filename = args.submissionid + "_validation_log.txt"
+          open(log_filename,'w').close()
+          log_text = "empty"
           if args.submission_file is None:
               prediction_file_status = "INVALID"
               invalid_reasons = ['Expected FileEntity type but found ' + args.entity_type]
@@ -57,10 +61,15 @@ requirements:
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
 
-              eprint("\n\n---------------DEBUGGING-----------------")
-              eprint (subdf)
-              eprint (args.submission_file)
-              eprint("---------------------------------------------\n\n")
+              log_text = 
+              f"""---------------DEBUGGING-----------------
+              content of prediction file
+              {subdf}
+              
+              path to prediction file
+              {args.submission_file}
+              ---------------------------------------------
+              """
 
               if subdf.get("person_id") is None:
                   invalid_reasons.append("Submission must have person_id column")
@@ -68,6 +77,18 @@ requirements:
           result = {'prediction_file_errors':"\n".join(invalid_reasons),'prediction_file_status':prediction_file_status}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
+
+          
+
+          with open(log_filename,'w') as log_file:
+            log_file.write(log_text)
+          statinfo = os.stat(log_filename)
+          if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
+            ent = synapseclient.File(log_filename, parent = args.parentid)
+            try:
+              logs = syn.store(ent)
+            except synapseclient.exceptions.SynapseHTTPError as e:
+              pass
      
 outputs:
 
