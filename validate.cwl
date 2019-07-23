@@ -38,7 +38,7 @@ requirements:
           import pandas as pd
 
           def eprint(*args, **kwargs):
-                print(*args, file=sys.stderr, **kwargs)
+            print(*args, file=sys.stderr, **kwargs)
 
           parser = argparse.ArgumentParser()
           parser.add_argument("-r", "--results", required=True, help="validation results")
@@ -67,8 +67,7 @@ requirements:
               
               path to prediction file
               {args.submission_file}
-              ---------------------------------------------
-              """
+              ---------------------------------------------"""
 
               if subdf.get("person_id") is None:
                   invalid_reasons.append("Submission must have person_id column")
