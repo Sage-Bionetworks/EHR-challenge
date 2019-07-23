@@ -183,6 +183,8 @@ steps:
         source: "#submissionId"
       - id: parentid
         source: "#submitterUploadSynId"
+      - id: synapse_config
+        source: "#synapseConfig"
     out:
       - id: results
       - id: status

@@ -16,6 +16,8 @@ inputs:
     type: int
   - id: parentid
     type: string
+  - id: synapse_config
+    type: File
 
 arguments:
   - valueFrom: validate.py
@@ -29,6 +31,8 @@ arguments:
     prefix: -i
   - valueFrom: $(inputs.parentid)
     prefix: -p
+  - valueFrom: $(inputs.synapse_config.path)
+    prefix: -c
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -54,6 +58,7 @@ requirements:
           parser.add_argument("-s", "--submission_file", help="Submission File")
           parser.add_argument("-i", "--submissionid", help="Submission ID")
           parser.add_argument("-p", "--parentid", help="Parent ID")
+          parser.add_argument("-c", "--synapse_config", help="Parent ID")
 
           args = parser.parse_args()
 
