@@ -38,9 +38,9 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/common/dream/data/UW_OMOP/train
+  - valueFrom: uw_train
     prefix: -i
-#
+#/data/common/dream/data/UW_OMOP/train
 
 requirements:
   - class: InitialWorkDirRequirement
