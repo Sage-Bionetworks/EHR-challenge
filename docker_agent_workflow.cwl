@@ -232,7 +232,7 @@ steps:
       - id: filepath
 
   scoring:
-    run: score.cwl
+    run: score-2.cwl
     in:
       - id: inputfile
         source: "#run_docker_infer/predictions"
