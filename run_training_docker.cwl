@@ -38,7 +38,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/common/dream/data/UW_OMOP/train
+  - valueFrom: uw_train
     prefix: -i
 #/data/common/dream/data/UW_OMOP/train
 
@@ -68,9 +68,6 @@ requirements:
 
           exit = Event()
 
-          def eprint(*args, **kwargs):
-              print(*args, file=sys.stderr, **kwargs)
-
           def main(args):
             if args.status == "INVALID":
               raise Exception("Docker image is invalid")
@@ -92,13 +89,7 @@ requirements:
             model_dir = os.path.join(os.getcwd(), "model")
             input_dir = args.input_dir
 
-            """eprint ("------------DEBUG INFORMATION---------------")
-            eprint (docker_image)
-            eprint (args.synapse_config)
-            eprint (scratch_dir)
-            eprint (model_dir)
-            eprint (input_dir)
-            eprint ("--------------------------------------------")"""
+            print ("mounting volumes")
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
@@ -113,6 +104,7 @@ requirements:
               volumes[vol] = {'bind': mounted_volumes[vol].split(":")[0], 'mode': mounted_volumes[vol].split(":")[1]}
 
             #Look for if the container exists already, if so, reconnect 
+            print ("checking for containers")
             container=None
             errors = None
             for cont in client.containers.list(all=True):
@@ -125,13 +117,14 @@ requirements:
             # If the container doesn't exist, make sure to run the docker image
             if container is None:
               #Run as detached, logs will stream below
+              print ("running container")
               try:
                 container = client.containers.run(docker_image, 'bash "/app/train.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
                 errors = str(e) + "\n"
-
+            print ("creating logfile")
             #Create the logfile
             log_filename = args.submissionid + "_training_log.txt"
             open(log_filename,'w').close()

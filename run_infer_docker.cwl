@@ -42,10 +42,11 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: /data/common/dream/data/UW_OMOP/validation
+  - valueFrom: uw_validation
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
+  #/data/common/dream/data/UW_OMOP/validation
 
 requirements:
   - class: InitialWorkDirRequirement
