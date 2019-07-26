@@ -124,6 +124,7 @@ requirements:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
                 errors = str(e) + "\n"
+              
             print ("creating logfile")
             #Create the logfile
             log_filename = args.submissionid + "_training_log.txt"
@@ -174,6 +175,7 @@ requirements:
               except synapseclient.exceptions.SynapseHTTPError as e:
                 pass
 
+            print ("finished training")
             #Try to remove the image
             try:
               client.images.remove(docker_image, force=True)
