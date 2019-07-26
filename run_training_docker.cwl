@@ -149,6 +149,7 @@ requirements:
                   try:
                     logs = syn.store(ent)
                   except synapseclient.exceptions.SynapseHTTPError as e:
+                    print (e)
                     pass
                   time.sleep(60)
               #Must run again to make sure all the logs are captured
