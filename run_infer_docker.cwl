@@ -42,7 +42,7 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: synpuf_validation
+  - valueFrom: uW_validation
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
