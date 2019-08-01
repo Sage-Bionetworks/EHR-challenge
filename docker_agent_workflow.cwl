@@ -135,7 +135,7 @@ steps:
         source: "#synapseConfig"
       - id: model
         source: "#run_docker_train/model"
-      -id: scratch
+      - id: scratch
         source: "#run_docker_train/scratch"
     out:
       - id: predictions
