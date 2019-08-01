@@ -153,7 +153,8 @@ requirements:
                 with open(log_filename,'w') as log_file:
                   log_file.write(log_text)
                 statinfo = os.stat(log_filename)
-                if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
+              # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
+                if statinfo.st_size > 0:
                   ent = synapseclient.File(log_filename, parent = args.parentid)
                   try:
                     logs = syn.store(ent)
@@ -182,7 +183,7 @@ requirements:
                 if errors is not None:
                   log_file.write(errors)
                 else:
-                  log_file.write("No Logs, or logs exceed size limit")
+                  log_file.write("No Logs")
               ent = synapseclient.File(log_filename, parent = args.parentid)
               try:
                 logs = syn.store(ent)
