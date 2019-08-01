@@ -27,6 +27,10 @@ inputs:
     type:
       type: array
       items: File
+  - id: scratch
+    type:
+      type: array
+      items: File
 
 arguments: 
   - valueFrom: runDocker.py
@@ -46,6 +50,8 @@ arguments:
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
+  - valueFrom: $(inputs.scratch)
+    prefix: -f
   #/data/common/dream/data/UW_OMOP/validation
 
 requirements:
@@ -87,11 +93,17 @@ requirements:
             output_dir = os.path.join(os.getcwd(), "output")
             input_dir = args.input_dir
             model_files = args.model_files
+            scratch_files = args.scratch_files
+
 
             scratch_dir = os.path.join(os.getcwd(), "scratch")
+            os.mkdir(scratch_dir)
+            for scratch_file in scratch_files:
+              shutil.copy(scratch_file, scratch_dir)
+            
+
             model_dir = os.path.join(os.getcwd(), "model")
             os.mkdir(model_dir)
-
             for model_file in model_files:
               shutil.copy(model_file, model_dir)
 
@@ -207,6 +219,7 @@ requirements:
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
             parser.add_argument("-m","--model_files", required=True, help="Model files", nargs='+')
+            parser.add_argument("-f", "--scratch_files", required=True, help="scratch files", nargs="+")
             args = parser.parse_args()
             client = docker.from_env()
             docker_image = args.docker_repository + "@" + args.docker_digest

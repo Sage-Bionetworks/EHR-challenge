@@ -229,3 +229,9 @@ outputs:
       items: File
     outputBinding:
       glob: model/*
+  scratch:
+    type:
+      type: array
+      items: File
+    outputBinding:
+      glob: scratch/*

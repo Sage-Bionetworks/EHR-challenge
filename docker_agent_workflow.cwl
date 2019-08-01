@@ -112,6 +112,7 @@ steps:
         source: "#synapseConfig"
     out:
       - id: model
+      - id: scratch
 
   run_docker_infer:
     run: run_infer_docker.cwl
@@ -134,6 +135,8 @@ steps:
         source: "#synapseConfig"
       - id: model
         source: "#run_docker_train/model"
+      -id: scratch
+        source: "#run_docker_train/scratch"
     out:
       - id: predictions
 
