@@ -58,10 +58,10 @@ requirements:
             fpr, tpr, thresholds = roc_curve(evaluation["status"], evaluation["score"], pos_label=1)
             roc_auc = auc(fpr, tpr)
 
-            precision = round(precision_score(evaluation["status"], evaluation["score"].round()), 2)
+            precision = round(precision_score(evaluation["status"], evaluation["score"].round()), 3)
 
             prediction_file_status = "SCORED"
-            score = round(roc_auc, 2)
+            score = round(roc_auc, 3)
           else:
             prediction_file_status = args.status
             score = -1
