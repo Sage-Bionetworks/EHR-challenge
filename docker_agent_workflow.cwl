@@ -344,13 +344,13 @@ steps:
     out:
       - id: results
 
-  annotate_progress_with_progress:
+  annotate_predictions_with_progress:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/annotate_submission.cwl
     in:
       - id: submissionid
         source: "#submissionId"
       - id: annotation_values
-        source: "#progress_update_progress/results"
+        source: "#progress_update_predictions/results"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
