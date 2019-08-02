@@ -244,4 +244,4 @@ outputs:
   - id: status
     type: string
     outputBinding:
-      outputEval: "INFERRED"
+      outputEval: $("INFERRED")
