@@ -241,7 +241,7 @@ outputs:
     outputBinding:
       glob: output/predictions.csv
   
-  - id: status
+  status:
     type: string
     outputBinding:
       outputEval: $("INFERRED")
