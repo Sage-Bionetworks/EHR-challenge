@@ -157,7 +157,7 @@ steps:
       - id: submission_status
         valueFrom: "INFERRING"
       - id: pipeline_status
-        source: "#docker_run_train/status"
+        source: "#run_docker_train/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -234,7 +234,7 @@ steps:
       - id: submission_status
         valueFrom: "VALIDATING PREDICTIONS"
       - id: pipeline_status
-        source: "#docker_run_infer/status"
+        source: "#run_docker_infer/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
