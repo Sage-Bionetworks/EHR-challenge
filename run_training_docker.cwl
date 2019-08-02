@@ -236,3 +236,8 @@ outputs:
       items: File
     outputBinding:
       glob: scratch/*
+  
+  - id: status
+    type: string
+    outputBinding:
+      outputEval: "TRAINED"

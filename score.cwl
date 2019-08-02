@@ -79,3 +79,10 @@ outputs:
     type: File
     outputBinding:
       glob: results.json
+
+  - id: status
+    type: string
+    outputBinding:
+      glob: results.json
+      loadContents: true
+      outputEval: $(JSON.parse(self[0].contents)['prediction_file_status'])

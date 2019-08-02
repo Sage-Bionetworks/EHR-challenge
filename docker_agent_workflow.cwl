@@ -37,6 +37,8 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "EVALUATION STARTED"
+      - id: pipeline_status
+        valueFrom: "RECEIVED"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -104,6 +106,8 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "TRAINING"
+      - id: pipe_status
+        source: "#validate_docker/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -143,6 +147,7 @@ steps:
     out:
       - id: model
       - id: scratch
+      - id: status
 
   annotate_results_trained:
     run: annotate_submission_status.cwl
@@ -151,6 +156,8 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "INFERRING"
+      - id: pipeline_status
+        source: "#docker_run_train/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -184,6 +191,7 @@ steps:
         source: "#run_docker_train/scratch"
     out:
       - id: predictions
+      - id: status
 
   upload_results:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/upload_to_synapse.cwl
@@ -225,6 +233,8 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "VALIDATING PREDICTIONS"
+      - id: pipeline_status
+        source: "#docker_run_infer/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -238,8 +248,6 @@ steps:
     in:
       - id: inputfile
         source: "#run_docker_infer/predictions"
-      # Entity type isn't passed in because docker file prediction files are passed
-      # From the docker run command
       - id: entity_type
         valueFrom: "none"
       - id: submissionid
@@ -291,6 +299,8 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "SCORING"
+      - id: pipeline_status
+        source: "#validation/status"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
@@ -320,6 +330,7 @@ steps:
         source: "#download_goldstandard/filepath"
     out:
       - id: results
+      - id: status
 
   score_email:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/score_email.cwl

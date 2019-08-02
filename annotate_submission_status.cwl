@@ -12,6 +12,8 @@ inputs:
     type: int
   - id: submission_status
     type: string
+  - id: pipe_status
+    type: string
   - id: to_public
     type: string
   - id: force_change_annotation_acl
@@ -23,6 +25,8 @@ arguments:
   - valueFrom: annotationSubmission.py
   - valueFrom: $(inputs.submissionid)
     prefix: -s
+  - valueFrom: $(inputs.pipe_status)
+    prefix: -v
   - valueFrom: $(inputs.to_public)
     prefix: -p
   - valueFrom: $(inputs.force_change_annotation_acl)
@@ -93,9 +97,13 @@ requirements:
             status.annotations = priv
             return(status)
 
-          def annotate_submission(syn, submissionid, annotation_values, to_public, force_change_annotation_acl):
+          def annotate_submission(syn, pipe_status, submissionid, annotation_values, to_public, force_change_annotation_acl):
             status = syn.getSubmissionStatus(submissionid)
-            annotation_json = {"submission_status": annotation_values}
+            
+            if pipe_status != "INVALID":
+              annotation_json = {"submission_status": annotation_values}
+            else:
+              annotation_json = {"submission_status": "INVALID"}
             status = update_single_submission_status(status, annotation_json, to_public=to_public, force_change_annotation_acl=force_change_annotation_acl)
             status = syn.store(status)
 
@@ -103,6 +111,7 @@ requirements:
             parser = argparse.ArgumentParser()
             parser.add_argument("-s", "--submissionid", required=True, help="Submission ID")
             parser.add_argument("-p", "--to_public", help="Annotations are by default private except to queue administrator(s), so change them to be public", choices=['true','false'], default='false')
+            parser.add_argument("-v", "--pipe_status", required=True, help="where are we in the pipeline")
             parser.add_argument("-f", "--force_change_annotation_acl", help="Ability to update annotations if the key has different ACLs, warning will occur if this parameter isn't specified and the same key has different ACLs", choices=['true','false'], default='false')
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
             parser.add_argument("-x", "--submission_status", help="Submission Status")
@@ -111,7 +120,7 @@ requirements:
             args.to_public = True if args.to_public == "true" else False
             args.force_change_annotation_acl = True if args.force_change_annotation_acl == "true" else False
             syn.login()
-            _with_retry(lambda: annotate_submission(syn, args.submissionid, args.submission_status, to_public=args.to_public, force_change_annotation_acl=args.force_change_annotation_acl),wait=3,retries=10)
+            _with_retry(lambda: annotate_submission(syn, args.pipe_status args.submissionid, args.submission_status, to_public=args.to_public, force_change_annotation_acl=args.force_change_annotation_acl),wait=3,retries=10)
      
 outputs: []
 
