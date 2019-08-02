@@ -97,6 +97,21 @@ steps:
         source: "#synapseConfig"
     out: []
 
+  annotate_results_validated:
+    run: annotate_submission_status.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: submission_status
+        valueFrom: "TRAINING"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
   get_docker_config:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/get_docker_config.cwl
     in:
@@ -128,6 +143,21 @@ steps:
     out:
       - id: model
       - id: scratch
+
+  annotate_results_trained:
+    run: annotate_submission_status.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: submission_status
+        valueFrom: "INFERRING"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
 
   run_docker_infer:
     run: run_infer_docker.cwl
@@ -188,6 +218,21 @@ steps:
         source: "#synapseConfig"
     out: []
 
+  annotate_results_inferred:
+    run: annotate_submission_status.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: submission_status
+        valueFrom: "VALIDATING PREDICTIONS"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
   validation:
     run: validate.cwl
     in:
@@ -239,6 +284,21 @@ steps:
         source: "#synapseConfig"
     out: []
 
+  annotate_results_scoring:
+    run: annotate_submission_status.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: submission_status
+        valueFrom: "SCORING"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
   download_goldstandard:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/download_from_synapse.cwl
     in:
@@ -279,6 +339,21 @@ steps:
         source: "#submissionId"
       - id: annotation_values
         source: "#scoring/results"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
+  annotate_results_trained:
+    run: annotate_submission_status.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: submission_status
+        valueFrom: "SCORED"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
