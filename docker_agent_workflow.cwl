@@ -292,23 +292,6 @@ steps:
         source: "#synapseConfig"
     out: []
 
-  annotate_results_scoring:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "SCORING"
-      - id: pipe_status
-        source: "#validation/status"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
-
   download_goldstandard:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/download_from_synapse.cwl
     in:

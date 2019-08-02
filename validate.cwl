@@ -89,10 +89,16 @@ requirements:
               if evaluation.shape[0] < goldstandard.shape[0]:
                 invalid_reasons.append("Submission does not have scores for all goldstandard patients.")
                 prediction_file_status = "INVALID"
+          
+          if prediction_file_status == "INVALID":
+            submission_status = "INVALID"
+          else:
+            submission_status = "SCORING"
+            
           result = {
             'prediction_file_errors':"\n".join(invalid_reasons),
             'prediction_file_status':prediction_file_status,
-            'submission_status': prediction_file_status}
+            'submission_status': submission_status}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
      
