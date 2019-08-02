@@ -330,7 +330,6 @@ steps:
         source: "#download_goldstandard/filepath"
     out:
       - id: results
-      - id: status
 
   score_email:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/score_email.cwl
