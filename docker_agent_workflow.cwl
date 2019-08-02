@@ -36,7 +36,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: submission_status
-        source: "EVALUATION STARTED"
+        valueFrom: "EVALUATION STARTED"
       - id: to_public
         valueFrom: "true"
       - id: force_change_annotation_acl
