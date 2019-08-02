@@ -95,15 +95,6 @@ requirements:
             'submission_status': prediction_file_status}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
-
-          
-          statinfo = os.stat(log_filename)
-          if statinfo.st_size > 0:
-            ent = synapseclient.File(log_filename, parent = args.parentid)
-            try:
-              logs = syn.store(ent)
-            except synapseclient.exceptions.SynapseHTTPError as e:
-              pass
      
 outputs:
 
