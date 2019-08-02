@@ -20,8 +20,6 @@ arguments:
     prefix: -i
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: results.json
-    prefix: -r
   - valueFrom: $(inputs.submission_status)
     prefix: -s
 
@@ -37,7 +35,6 @@ requirements:
             import json
 
             parser = argparse.ArgumentParser()
-            parser.add_argument("-r", "--results", required=True, help="validation results")
             parser.add_argument("-i", "--submissionid", help="Submission ID")
             parser.add_argument("-c", "--synapse_config", help="Parent ID")
             parser.add_argument("-s", "--submission_status", help="Submission Status")
