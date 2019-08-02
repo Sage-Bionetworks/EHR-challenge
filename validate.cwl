@@ -66,15 +66,11 @@ requirements:
           syn.login()
 
           #Create the logfile
-          log_filename = args.submissionid + "_validation_log.txt"
-          open(log_filename,'w').close()
           log_text = "empty"
           if args.submission_file is None:
               prediction_file_status = "INVALID"
               invalid_reasons = ['Expected FileEntity type but found ' + args.entity_type]
           else:
-              #with open(args.submission_file,"r") as sub_file:
-              #    message = sub_file.read()
               subdf = pd.read_csv(args.submission_file)
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
@@ -93,7 +89,10 @@ requirements:
               if evaluation.shape[0] < goldstandard.shape[0]:
                 invalid_reasons.append("Submission does not have scores for all goldstandard patients.")
                 prediction_file_status = "INVALID"
-          result = {'prediction_file_errors':"\n".join(invalid_reasons),'prediction_file_status':prediction_file_status}
+          result = {
+            'prediction_file_errors':"\n".join(invalid_reasons),
+            'prediction_file_status':prediction_file_status,
+            'submission_status': prediction_file_status}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
 

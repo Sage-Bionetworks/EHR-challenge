@@ -346,19 +346,4 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
     out: []
-
-  annotate_results_trained:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "SCORED"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
  
