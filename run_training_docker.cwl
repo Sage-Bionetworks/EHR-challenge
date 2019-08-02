@@ -237,7 +237,7 @@ outputs:
     outputBinding:
       glob: scratch/*
   
-  - id: status
+  status:
     type: string
     outputBinding:
-      outputEval: "TRAINED"
+      outputEval: $("TRAINED")
