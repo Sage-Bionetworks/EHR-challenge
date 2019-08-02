@@ -37,7 +37,7 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "EVALUATION STARTED"
-      - id: pipeline_status
+      - id: pipe_status
         valueFrom: "RECEIVED"
       - id: to_public
         valueFrom: "true"
@@ -156,7 +156,7 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "INFERRING"
-      - id: pipeline_status
+      - id: pipe_status
         source: "#run_docker_train/status"
       - id: to_public
         valueFrom: "true"
@@ -233,7 +233,7 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "VALIDATING PREDICTIONS"
-      - id: pipeline_status
+      - id: pipe_status
         source: "#run_docker_infer/status"
       - id: to_public
         valueFrom: "true"
@@ -299,7 +299,7 @@ steps:
         source: "#submissionId"
       - id: submission_status
         valueFrom: "SCORING"
-      - id: pipeline_status
+      - id: pipe_status
         source: "#validation/status"
       - id: to_public
         valueFrom: "true"
