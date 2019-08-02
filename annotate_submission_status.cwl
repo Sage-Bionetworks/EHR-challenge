@@ -120,7 +120,7 @@ requirements:
             args.to_public = True if args.to_public == "true" else False
             args.force_change_annotation_acl = True if args.force_change_annotation_acl == "true" else False
             syn.login()
-            _with_retry(lambda: annotate_submission(syn, args.pipe_status args.submissionid, args.submission_status, to_public=args.to_public, force_change_annotation_acl=args.force_change_annotation_acl),wait=3,retries=10)
+            _with_retry(lambda: annotate_submission(syn, args.pipe_status, args.submissionid, args.submission_status, to_public=args.to_public, force_change_annotation_acl=args.force_change_annotation_acl),wait=3,retries=10)
      
 outputs: []
 
