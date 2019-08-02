@@ -30,6 +30,33 @@ outputs: []
 
 steps:
 
+  status_received:
+    run: submission_status.cwl
+    in:
+      - id: submissionId
+        source: "#submissionId"
+      - id: synapse_config
+        source: "#synapseConfig"
+      - id: submission_status
+        source: "#RECEIVED"
+    out:
+      - id: results
+
+    annotate_results_received:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/annotate_submission.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: annotation_values
+        source: "#status_received/results"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
   notify_participants:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.3/notification_email.cwl
     in:
