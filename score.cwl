@@ -81,7 +81,7 @@ requirements:
             'score':auroc_score,
             'prediction_file_status':prediction_file_status, 
             'submission_status': prediction_file_status,
-            'score_AUC': score, 
+            'score_AUC': auroc_score, 
             'score_prec': precision,
             'score_PRAUC': prauc_score}
           with open(args.results, 'w') as o:
