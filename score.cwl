@@ -64,7 +64,7 @@ requirements:
             # compute the AUPRC
             precision, recall, thresholds = precision_recall_curve(evaluation["status"], evaluation["score"])
             pr_auc = auc(recall, precision)
-            auprc_score = round(pr_auc, 5)
+            prauc_score = round(pr_auc, 5)
 
 
             # compute the precision
