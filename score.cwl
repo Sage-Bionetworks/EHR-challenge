@@ -74,14 +74,16 @@ requirements:
 
           else:
             prediction_file_status = args.status
-            score = -1
+            precision = -1
+            auroc_score = -1
+            prauc_score = -1
           result = {
-            'score':score,
+            'score':auroc_score,
             'prediction_file_status':prediction_file_status, 
             'submission_status': prediction_file_status,
             'score_AUC': score, 
             'score_prec': precision,
-            'score_PRAUC': auprc_score}
+            'score_PRAUC': prauc_score}
           with open(args.results, 'w') as o:
             o.write(json.dumps(result))
      
