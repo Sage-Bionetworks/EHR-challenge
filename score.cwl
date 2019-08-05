@@ -41,6 +41,7 @@ requirements:
           from sklearn.metrics import roc_curve
           from sklearn.metrics import auc
           from sklearn.metrics import precision_score
+          from sklearn.metrics import precision_recall_curve
 
           parser = argparse.ArgumentParser()
           parser.add_argument("-f", "--submissionfile", required=True, help="Submission File")
@@ -55,13 +56,22 @@ requirements:
 
             evaluation = goldstandard.merge(predictions, how="inner", on="person_id")
 
+            # compute the AUROC
             fpr, tpr, thresholds = roc_curve(evaluation["status"], evaluation["score"], pos_label=1)
             roc_auc = auc(fpr, tpr)
+            auroc_score = round(roc_auc, 5)
 
+            # compute the AUPRC
+            precision, recall, thresholds = precision_recall_curve(evaluation["status"], evaluation["score"])
+            pr_auc = auc(recall, precision)
+            auprc_score = round(pr_auc, 5)
+
+
+            # compute the precision
             precision = round(precision_score(evaluation["status"], evaluation["score"].round()), 5)
 
             prediction_file_status = "SCORED"
-            score = round(roc_auc, 5)
+
           else:
             prediction_file_status = args.status
             score = -1
@@ -70,7 +80,8 @@ requirements:
             'prediction_file_status':prediction_file_status, 
             'submission_status': prediction_file_status,
             'score_AUC': score, 
-            'score_prec': precision}
+            'score_prec': precision,
+            'score_PRAUC': auprc_score}
           with open(args.results, 'w') as o:
             o.write(json.dumps(result))
      
