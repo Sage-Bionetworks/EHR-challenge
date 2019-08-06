@@ -146,7 +146,7 @@ steps:
       - id: docker_authentication
 
   run_synthetic_docker_train:
-    run: run_synthetic_training_docker.cwl
+    run: run_training_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
@@ -164,6 +164,8 @@ steps:
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
+      - id: input_dir
+        valueFrom: "synthetic_train"
     out:
       - id: model
       - id: scratch
@@ -187,7 +189,7 @@ steps:
     out: []
 
   run_synthetic_docker_infer:
-    run: run_synthetic_infer_docker.cwl
+    run: run_infer_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
@@ -209,6 +211,8 @@ steps:
         source: "#run_synthetic_docker_train/model"
       - id: scratch
         source: "#run_synthetic_docker_train/scratch"
+      - id: input_dir
+        valueFrom: "synthetic_validation"
     out:
       - id: predictions
       - id: status
@@ -283,6 +287,8 @@ steps:
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
+      - id: input_dir
+        valueFrom: "uw_train"
     out:
       - id: model
       - id: scratch
@@ -328,6 +334,8 @@ steps:
         source: "#run_docker_train/model"
       - id: scratch
         source: "#run_docker_train/scratch"
+      - id: input_dir
+        valueFrom: "uw_validation"
     out:
       - id: predictions
       - id: status

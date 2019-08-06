@@ -144,6 +144,8 @@ steps:
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
+      - id: input_dir
+        valueFrom: "uw_train"
     out:
       - id: model
       - id: scratch
@@ -189,6 +191,8 @@ steps:
         source: "#run_docker_train/model"
       - id: scratch
         source: "#run_docker_train/scratch"
+      - id: input_dir
+        valueFrom: "uw_validation"
     out:
       - id: predictions
       - id: status
