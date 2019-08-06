@@ -117,7 +117,7 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
   annotate_synthetic_results_validated:
     run: annotate_submission_status.cwl
@@ -144,7 +144,6 @@ steps:
     out: 
       - id: docker_registry
       - id: docker_authentication
-
 
   run_synthetic_docker_train:
     run: run_synthetic_training_docker.cwl
@@ -265,7 +264,6 @@ steps:
         source: "#synapseConfig"
     out: []
 
-
   run_docker_train:
     run: run_training_docker.cwl
     in:
@@ -365,7 +363,7 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
   annotate_results_inferred:
     run: annotate_submission_status.cwl
@@ -431,7 +429,7 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
   download_goldstandard:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
@@ -479,5 +477,5 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
  
