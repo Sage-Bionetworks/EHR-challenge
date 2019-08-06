@@ -125,7 +125,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: submission_status
-        valueFrom: "SYNTHETIC_TRAINING"
+        valueFrom: "SYNTHETIC TRAINING"
       - id: pipe_status
         source: "#validate_docker/status"
       - id: to_public
@@ -175,7 +175,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: submission_status
-        valueFrom: "SYNTHETIC_INFERRING"
+        valueFrom: "SYNTHETIC INFERRING"
       - id: pipe_status
         source: "#run_synthetic_docker_train/status"
       - id: to_public
@@ -241,9 +241,9 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: status
-        source: "#validation/status"
+        source: "#synthetic_validation/status"
       - id: invalid_reasons
-        source: "#validation/invalid_reasons"
+        source: "#synthetic_validation/invalid_reasons"
 
     out: []
 
