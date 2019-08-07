@@ -182,6 +182,7 @@ requirements:
               client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
+            
             list_model = os.listdir(model_dir)
             if len(list_model) == 0:
               raise Exception("No model generated, please check training docker")
@@ -230,6 +231,7 @@ outputs:
       items: File
     outputBinding:
       glob: model/*
+      
   scratch:
     type:
       type: array
