@@ -67,8 +67,15 @@ requirements:
 
             # compute the AUROC
             fpr, tpr, thresholds = roc_curve(evaluation["status"], evaluation["score"], pos_label=1)
-            sns.lineplot(fpr, tpr)
-            plt.savefig(f"/data/common/DREAM Challenge/Images_Char/{args.submissionid}_AUC.png")
+
+            output_auc = open(f"/data/common/DREAM Challenge/data/AUCs/{}_auc.json")
+            output = json.dumps({"fpr": fpr, "tpr", tpr})
+            output_auc.write(output)
+            output_auc.close()
+
+            #sns.lineplot(fpr, tpr)
+            #plt.savefig(f"/data/common/DREAM Challenge/Images_Char/{args.submissionid}_AUC.png")
+            
             roc_auc = auc(fpr, tpr)
             auroc_score = round(roc_auc, 5)
 
