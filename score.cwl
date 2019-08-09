@@ -13,6 +13,8 @@ inputs:
     type: File
   - id: status
     type: string
+  - id: submissionid
+    type: int
 
 arguments:
   - valueFrom: score.py
@@ -24,6 +26,8 @@ arguments:
     prefix: -g
   - valueFrom: results.json
     prefix: -r
+  - valueFrom: $(inputs.submissionid)
+    prefix: -i
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -42,12 +46,17 @@ requirements:
           from sklearn.metrics import auc
           from sklearn.metrics import precision_score
           from sklearn.metrics import precision_recall_curve
+          import matplotlib
+          matplotlib.use("agg")
+          import seaborn as sns
+          import matplotlib.pyplot as plt
 
           parser = argparse.ArgumentParser()
           parser.add_argument("-f", "--submissionfile", required=True, help="Submission File")
           parser.add_argument("-s", "--status", required=True, help="Submission status")
           parser.add_argument("-r", "--results", required=True, help="Scoring results")
           parser.add_argument("-g", "--goldstandard", required=True, help="Goldstandard for scoring")
+          parser.add_argument("-i", "--submissionid", required=True, help="Submission ID")
 
           args = parser.parse_args()
           if args.status == "VALIDATED":
@@ -58,6 +67,8 @@ requirements:
 
             # compute the AUROC
             fpr, tpr, thresholds = roc_curve(evaluation["status"], evaluation["score"], pos_label=1)
+            sns.lineplot(fpr, tpr)
+            plt.savefig(f"/data/common/DREAM Challenge/Images_Char/{args.submissionid}_AUC.png")
             roc_auc = auc(fpr, tpr)
             auroc_score = round(roc_auc, 5)
 

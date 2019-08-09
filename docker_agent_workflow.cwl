@@ -311,6 +311,8 @@ steps:
         source: "#validation/status"
       - id: goldstandard
         source: "#download_goldstandard/filepath"
+      - id: submissionid
+        source: "#submissionId"
     out:
       - id: results
 
