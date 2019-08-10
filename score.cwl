@@ -68,7 +68,7 @@ requirements:
             # compute the AUROC
             fpr, tpr, thresholds = roc_curve(evaluation["status"], evaluation["score"], pos_label=1)
 
-            output_auc = open("/data/common/DREAM\ Challenge/data/AUCs/" + str(args.submissionid) + "_auc.json")
+            output_auc = open("/data/common/DREAM Challenge/data/AUCs/" + str(args.submissionid) + "_auc.json", "w")
             output = json.dumps({'fpr': fpr, 'tpr': tpr})
             output_auc.write(output)
             output_auc.close()
