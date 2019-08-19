@@ -24,7 +24,7 @@ inputs:
   - id: synapse_config
     type: File
   - id: input_dir
-    type: File
+    type: string
 
 arguments: 
   - valueFrom: runDocker.py
