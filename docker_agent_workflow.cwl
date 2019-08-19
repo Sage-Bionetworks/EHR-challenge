@@ -165,7 +165,7 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        valueFrom: "synthetic_train"
+        valueFrom: "synpuf_train"
     out:
       - id: model
       - id: scratch
@@ -212,7 +212,7 @@ steps:
       - id: scratch
         source: "#run_synthetic_docker_train/scratch"
       - id: input_dir
-        valueFrom: "synthetic_validation"
+        valueFrom: "synpuf_validation"
     out:
       - id: predictions
       - id: status
