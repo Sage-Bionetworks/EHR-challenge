@@ -23,6 +23,8 @@ inputs:
     type: string
   - id: synapse_config
     type: File
+  - id: input_dir
+    type: string
   - id: model
     type:
       type: array
@@ -46,7 +48,9 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: uw_validation
+  # - valueFrom: uw_validation
+  #   prefix: -i
+  - valueFrom: $(inputs.input_dir)
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
@@ -142,7 +146,7 @@ requirements:
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_filename = args.submissionid + "_infer_log.txt"
+            log_filename = args.submissionid + "_" + args.input_dir + "_infer_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
