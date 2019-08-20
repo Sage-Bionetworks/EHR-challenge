@@ -131,7 +131,7 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-            log_filename = args.submissionid + "_training_log.txt"
+            log_filename = args.submissionid + "_" + args.input_dir + "_training_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
