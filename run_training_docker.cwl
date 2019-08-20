@@ -93,9 +93,9 @@ requirements:
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
-            mounted_volumes = {scratch_dir:'/scratch:rw',
+            mounted_volumes = {scratch_dir:'/scratch:z',
                                input_dir:'/train:ro',
-                               model_dir:'/model:rw'}
+                               model_dir:'/model:z'}
             #All mounted volumes here in a list
             all_volumes = [scratch_dir,input_dir,model_dir]
             #Mount volumes
