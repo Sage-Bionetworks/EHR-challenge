@@ -43,11 +43,6 @@ requirements:
           from sklearn.metrics import precision_score
           from sklearn.metrics import precision_recall_curve
 
-          import matplotlib
-          matplotlib.use("agg")
-          import seaborn as sns
-          import matplotlib.pyplot as plt
-
           parser = argparse.ArgumentParser()
           parser.add_argument("-f", "--submissionfile", required=True, help="Submission File")
           parser.add_argument("-s", "--status", required=True, help="Submission status")
