@@ -23,6 +23,8 @@ inputs:
     type: string
   - id: synapse_config
     type: File
+  - id: input_dir
+    type: string
 
 arguments: 
   - valueFrom: runDocker.py
@@ -38,8 +40,10 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  - valueFrom: uw_train
+  - valueFrom: $(inputs.input_dir)
     prefix: -i
+#  - valueFrom: uw_train
+#    prefix: -i
 #/data/common/dream/data/UW_OMOP/train
 
 requirements:
@@ -182,6 +186,7 @@ requirements:
               client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
+            
             list_model = os.listdir(model_dir)
             if len(list_model) == 0:
               raise Exception("No model generated, please check training docker")
@@ -230,6 +235,7 @@ outputs:
       items: File
     outputBinding:
       glob: model/*
+      
   scratch:
     type:
       type: array
