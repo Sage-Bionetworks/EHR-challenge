@@ -40,11 +40,8 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-#  - valueFrom: uw_train
-#    prefix: -i
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-#/data/common/dream/data/UW_OMOP/train
 
 requirements:
   - class: InitialWorkDirRequirement

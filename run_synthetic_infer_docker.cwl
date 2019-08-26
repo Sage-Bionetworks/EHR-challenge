@@ -50,13 +50,10 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-#  - valueFrom: uw_validation
-#    prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  #/data/common/dream/data/UW_OMOP/validation
 
 requirements:
   - class: InitialWorkDirRequirement
