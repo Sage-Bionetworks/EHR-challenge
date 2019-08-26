@@ -66,7 +66,7 @@ steps:
         source: "#synapseConfig"
       - id: parentid
         source: "#submitterUploadSynId"
-    out: []
+    out: [finished]
 
   get_docker_submission:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/get_submission_docker.cwl
@@ -107,7 +107,7 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
   annotate_results_validated:
     run: annotate_submission_status.cwl
@@ -238,7 +238,7 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
   annotate_results_inferred:
     run: annotate_submission_status.cwl
@@ -288,8 +288,7 @@ steps:
         source: "#validation/status"
       - id: invalid_reasons
         source: "#validation/invalid_reasons"
-
-    out: []
+    out: [finished]
 
   annotate_validation_with_output:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
@@ -304,5 +303,22 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
-    out: []
+    out: [finished]
 
+  submit_to_challenge:
+    run: submit_to_challenge.cwl
+    id:
+      - id: status
+        source: "#validation/status"
+      - id: submissionid
+        source: "#submissionId"
+      - id: synapse_config
+        source: "#synapseConfig"
+      - id: parentid
+        source: "#submitterUploadSynId"
+      - id: evaluationid
+        valueFrom: "9614308"
+      - id: previous_annotation_finished
+        source: "#annotate_validation_with_output/finished"
+      - id: previous_email_finished
+        source: "#validation_email/finished"
