@@ -30,6 +30,16 @@ outputs: []
 
 steps:
 
+  download_goldstandard:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
+    in:
+      - id: synapseid
+        valueFrom: "syn20545685"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out:
+      - id: filepath
+
   annotate_results_received:
     run: annotate_submission_status.cwl
     in:
@@ -295,3 +305,4 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
     out: []
+
