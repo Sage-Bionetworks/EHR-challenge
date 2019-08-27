@@ -15,7 +15,7 @@ def main():
         personids = []
         for row in csv_reader:
             if line_count > 0:
-                personids.append(row[0])
+                personids.append(row[1])
             line_count += 1
     with open("/output/predictions.csv", "w") as model:
         model.write("person_id,score\n")

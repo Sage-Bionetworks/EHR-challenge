@@ -14,7 +14,7 @@ def main():
         personids = []
         for row in csv_reader:
             if line_count > 0:
-                personids.append(row[0])
+                personids.append(row[1])
             line_count += 1
     with open("/model/personids.csv", "w") as model:
         for person in personids:
