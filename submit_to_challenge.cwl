@@ -46,10 +46,7 @@ requirements:
           #!/usr/bin/env python
           import synapseclient
           import argparse
-          import os
           import json
-          import pandas as pd
-          import numpy as np
 
           parser = argparse.ArgumentParser()
           parser.add_argument("-s", "--status", required=True, help="Submission status")
@@ -63,10 +60,10 @@ requirements:
           syn = synapseclient.Synapse(configPath=args.synapse_config)
           syn.login()
           if args.status == "VALIDATED":
-            result = {"submissionid": args.submissionid}
-            with open(args.results, 'w') as o:
-              o.write(json.dumps(result))
-            submission_file = synapseclient.File(args.result)
+            submission_dict = {"submissionid": args.submissionid}
+            with open(args.results, 'w') as json_file:
+              json_file.write(json.dumps(submission_dict))
+            submission_file = synapseclient.File(args.results, parentId=args.parentid)
             submission_file_ent = syn.store(submission_file)
             syn.submit(evaluation=args.evaluationid, entity=submission_file_ent)
           else:

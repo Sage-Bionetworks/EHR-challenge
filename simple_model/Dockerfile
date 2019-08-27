@@ -1,3 +1,4 @@
+# docker build -t docker.synapse.org/syn4990358/simple_ehr_model .
 FROM python:3.7
 
 WORKDIR /app
