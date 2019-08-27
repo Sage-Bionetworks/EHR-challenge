@@ -307,7 +307,7 @@ steps:
 
   submit_to_challenge:
     run: submit_to_challenge.cwl
-    id:
+    in:
       - id: status
         source: "#validation/status"
       - id: submissionid
@@ -322,3 +322,4 @@ steps:
         source: "#annotate_validation_with_output/finished"
       - id: previous_email_finished
         source: "#validation_email/finished"
+    out: []
