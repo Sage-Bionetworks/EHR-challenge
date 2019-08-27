@@ -19,6 +19,9 @@ def main():
     with open("/model/personids.csv", "w") as model:
         for person in personids:
             model.write(person + "\n")
+    with open("/scratch/personids.csv", "w") as model:
+        for person in personids:
+            model.write(person + "\n")
 
 if __name__ == "__main__":
     main()
