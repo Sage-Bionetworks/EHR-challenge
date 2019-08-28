@@ -60,7 +60,7 @@ requirements:
           syn = synapseclient.Synapse(configPath=args.synapse_config)
           syn.login()
           if args.status == "VALIDATED":
-            submission_dict = {"submissionid": args.submissionid}
+            submission_dict = {"submissionid": int(args.submissionid)}
             with open(args.results, 'w') as json_file:
               json_file.write(json.dumps(submission_dict))
             submission_file = synapseclient.File(args.results, parentId=args.parentid)
