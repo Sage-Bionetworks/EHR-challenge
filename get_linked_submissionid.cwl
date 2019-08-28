@@ -40,7 +40,7 @@ requirements:
 
 outputs:
   - id: submissionid
-    type: string
+    type: int
     outputBinding:
       # This tool depends on the submission.json to be named submission.json
       glob: submission.json
