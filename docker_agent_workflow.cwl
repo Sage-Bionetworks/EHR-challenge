@@ -29,6 +29,7 @@ inputs:
 outputs: []
 
 steps:
+
   get_submissionid:
     run: get_linked_submissionid.cwl
     in:
@@ -43,13 +44,20 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
     in:
       - id: synapseid
-        valueFrom: "syn20691544"
-        # valueFrom: "syn20545685"
-
+        valueFrom: "syn20545685"
       - id: synapse_config
         source: "#synapseConfig"
     out:
       - id: filepath
+
+  get_docker_config:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/get_docker_config.cwl
+    in:
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: 
+      - id: docker_registry
+      - id: docker_authentication
 
   annotate_results_received:
     run: annotate_submission_status.cwl
@@ -120,16 +128,6 @@ steps:
         source: "#synapseConfig"
     out: [finished]
 
-
-  get_docker_config:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/get_docker_config.cwl
-    in:
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: 
-      - id: docker_registry
-      - id: docker_authentication
-
   annotate_results_validated:
     run: annotate_submission_status.cwl
     in:
@@ -166,10 +164,9 @@ steps:
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
-      #- id: input_dir
-      #  valueFrom: "uw_train"
       - id: input_dir
-        valueFrom: "/home/thomasyu/train"
+        valueFrom: "uw_train"
+
     out:
       - id: model
       - id: scratch
@@ -215,10 +212,8 @@ steps:
         source: "#run_docker_train/model"
       - id: scratch
         source: "#run_docker_train/scratch"
-      #- id: input_dir
-      #  valueFrom: "uw_validation"
       - id: input_dir
-        valueFrom: "/home/thomasyu/validation"
+        valueFrom: "uw_validation"
     out:
       - id: predictions
       - id: status
