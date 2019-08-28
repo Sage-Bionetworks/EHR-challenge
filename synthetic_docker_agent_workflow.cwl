@@ -41,23 +41,6 @@ steps:
     out:
       - id: filepath
 
-  annotate_results_received:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "EVALUATION STARTED"
-      - id: pipe_status
-        valueFrom: "RECEIVED"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
-
   notify_participants:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/notification_email.cwl
     in:
@@ -110,23 +93,6 @@ steps:
         source: "#synapseConfig"
     out: [finished]
 
-  annotate_results_validated:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "TRAINING"
-      - id: pipe_status
-        source: "#validate_docker/status"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
-
   get_docker_config:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/get_docker_config.cwl
     in:
@@ -161,23 +127,6 @@ steps:
       - id: model
       - id: scratch
       - id: status
-
-  annotate_results_trained:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "INFERRING"
-      - id: pipe_status
-        source: "#run_docker_train/status"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
 
   run_docker_infer:
     run: run_synthetic_infer_docker.cwl
@@ -240,23 +189,6 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
     out: [finished]
-
-  annotate_results_inferred:
-    run: annotate_submission_status.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: submission_status
-        valueFrom: "VALIDATING PREDICTIONS"
-      - id: pipe_status
-        source: "#run_docker_infer/status"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: []
 
   validation:
     run: validate.cwl
