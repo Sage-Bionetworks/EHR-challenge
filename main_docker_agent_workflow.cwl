@@ -237,3 +237,23 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
     out: [finished]
+
+  submit_to_challenge:
+    run: submit_to_challenge.cwl
+    in:
+      - id: status
+        source: "#validation/status"
+      - id: submissionid
+        source: "#submissionId"
+      - id: synapse_config
+        source: "#synapseConfig"
+      - id: parentid
+        source: "#submitterUploadSynId"
+      - id: evaluationid
+        valueFrom: "9614308"
+      - id: previous_annotation_finished
+        source: "#annotate_validation_with_output/finished"
+#      - id: previous_email_finished
+#        source: "#validation_email/finished"
+    out: []
+
