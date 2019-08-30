@@ -65,7 +65,7 @@ requirements:
               json_file.write(json.dumps(submission_dict))
             submission_file = synapseclient.File(args.results, parentId=args.parentid)
             submission_file_ent = syn.store(submission_file)
-            syn.submit(evaluation=args.evaluationid, entity=submission_file_ent)
+            syn.submit(evaluation=args.evaluationid, entity=submission_file_ent, name=args.submissionid)
           else:
             raise ValueError("Submission not valid")
 outputs: []
