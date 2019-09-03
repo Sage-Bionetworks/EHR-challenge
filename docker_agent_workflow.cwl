@@ -317,23 +317,22 @@ steps:
         source: "#synapseConfig"
     out: [finished]
 
-  download_goldstandard:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
+  check_status:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/check_status.cwl
     in:
-      - id: synapseid
-        valueFrom: "syn20545685"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out:
-      - id: filepath
+      - id: status
+        source: "#validation/status"
+      - id: previous_annotation_finished
+        source: "#annotate_validation_with_output/finished"
+    out: [finished]
 
   scoring:
     run: score.cwl
     in:
       - id: inputfile
         source: "#run_docker_infer/predictions"
-      - id: status 
-        source: "#validation/status"
+      - id: check_validation_finished
+        source: "#check_status/finished"
       - id: goldstandard
         source: "#download_goldstandard/filepath"
       - id: submissionid
