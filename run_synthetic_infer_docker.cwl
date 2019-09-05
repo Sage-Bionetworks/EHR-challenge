@@ -23,8 +23,6 @@ inputs:
     type: string
   - id: synapse_config
     type: File
-  - id: input_dir
-    type: string
   - id: model
     type:
       type: array
@@ -33,6 +31,8 @@ inputs:
     type:
       type: array
       items: File
+  - id: input_dir
+    type: string
 
 arguments: 
   - valueFrom: runDocker.py
@@ -48,15 +48,12 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  # - valueFrom: uw_validation
-  #   prefix: -i
   - valueFrom: $(inputs.input_dir)
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  #/data/common/dream/data/UW_OMOP/validation
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -113,10 +110,10 @@ requirements:
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'
-            mounted_volumes = {scratch_dir:'/scratch:z',
+            mounted_volumes = {scratch_dir:'/scratch:rw',
                                input_dir:'/infer:ro',
-                               model_dir:'/model:z',
-                               output_dir:'/output:z'}
+                               model_dir:'/model:rw',
+                               output_dir:'/output:rw'}
 
             #All mounted volumes here in a list
             all_volumes = [scratch_dir,input_dir,model_dir,output_dir]
@@ -139,7 +136,7 @@ requirements:
             if container is None:
               #Run as detached, logs will stream below
               try:
-                container = client.containers.run(docker_image, 'bash "/app/infer.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
+                container = client.containers.run(docker_image, 'bash "/app/infer.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='30g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
