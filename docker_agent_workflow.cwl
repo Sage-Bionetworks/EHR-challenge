@@ -331,12 +331,12 @@ steps:
     in:
       - id: inputfile
         source: "#run_docker_infer/predictions"
-      - id: check_validation_finished
-        source: "#check_status/finished"
       - id: goldstandard
         source: "#download_goldstandard/filepath"
       - id: submissionid
         source: "#submissionId"
+      - id: check_validation_finished
+        source: "#check_status/finished"
     out:
       - id: results
 

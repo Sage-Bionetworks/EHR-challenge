@@ -11,10 +11,10 @@ inputs:
     type: File
   - id: goldstandard
     type: File
-  - id: check_validation_finished
-    type: boolean?
   - id: submissionid
     type: int
+  - id: check_validation_finished
+    type: boolean?
 
 arguments:
   - valueFrom: score.py
