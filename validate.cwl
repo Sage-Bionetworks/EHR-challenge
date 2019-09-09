@@ -79,7 +79,6 @@ requirements:
                 invalid_reasons.append("Submission must have 'score' column")
                 prediction_file_status = "INVALID"
               else:
-                if subdf['score']
                 try:
                   subdf['score'] = subdf['score'].astype(float)
                 except ValueError:
