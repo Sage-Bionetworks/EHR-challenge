@@ -75,21 +75,35 @@ requirements:
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
 
-
-              if subdf.get("person_id") is None:
-                invalid_reasons.append("Submission must have 'person_id' column")
-                prediction_file_status = "INVALID"
               if subdf.get("score") is None:
                 invalid_reasons.append("Submission must have 'score' column")
                 prediction_file_status = "INVALID"
+              else:
+                if subdf['score']
+                try:
+                  subdf['score'] = subdf['score'].astype(float)
+                except ValueError:
+                  invalid_reasons.append("Submission 'score' must contain values between 0 and 1")
+                  prediction_file_status = "INVALID"
+                if subdf['score'].isnull().any():
+                  invalid_reasons.append("Submission 'score' must not contain any NA or blank values")
+                  prediction_file_status = "INVALID"
+                if all([score >= 0 and score <= 1 for score in subdf['score']])
+                  invalid_reasons.append("Submission 'score' must contain values between 0 and 1")
+                  prediction_file_status = "INVALID"
               
-              goldstandard = pd.read_csv(args.goldstandard)
-              evaluation = goldstandard.merge(subdf, how="inner", on="person_id")
-              
-              if evaluation.shape[0] < goldstandard.shape[0]:
-                invalid_reasons.append("Submission does not have scores for all goldstandard patients.")
+              if subdf.get("person_id") is None:
+                invalid_reasons.append("Submission must have 'person_id' column")
                 prediction_file_status = "INVALID"
-          
+              else:
+                goldstandard = pd.read_csv(args.goldstandard)
+                if not goldstandard['person_id'].isin(subdf['person_id']).all():
+                  invalid_reasons.append("Submission 'person_id' does not have scores for all goldstandard patients.")
+                  prediction_file_status = "INVALID"
+                if subdf['person_id'].duplicated().any():
+                  invalid_reasons.append("Submission has duplicated 'person_id' values.")
+                  prediction_file_status = "INVALID"
+
           if prediction_file_status == "INVALID":
             submission_status = "INVALID"
           else:
