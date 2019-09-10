@@ -87,7 +87,7 @@ requirements:
                 if subdf['score'].isnull().any():
                   invalid_reasons.append("Submission 'score' must not contain any NA or blank values")
                   prediction_file_status = "INVALID"
-                if all([score >= 0 and score <= 1 for score in subdf['score']]):
+                if not all([score >= 0 and score <= 1 for score in subdf['score']]):
                   invalid_reasons.append("Submission 'score' must contain values between 0 and 1")
                   prediction_file_status = "INVALID"
               
