@@ -196,6 +196,12 @@ requirements:
               client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
+            
+            output_folder = os.listdir(output_dir)
+            if len(output_folder) == 0:
+              raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
+            elif "predictions.csv" not in output_folder:
+              raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)
