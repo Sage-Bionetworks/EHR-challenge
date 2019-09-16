@@ -161,7 +161,8 @@ requirements:
                 if statinfo.st_size > 0:
                   ent = synapseclient.File(log_filename, parent = args.parentid)
                   try:
-                    logs = syn.store(ent)
+                    #logs = syn.store(ent)
+                    print("don't store")
                   except synapseclient.exceptions.SynapseHTTPError as e:
                     pass
                   time.sleep(60)
@@ -174,7 +175,8 @@ requirements:
               if statinfo.st_size > 0: # and statinfo.st_size/1000.0 <= 50
                 ent = synapseclient.File(log_filename, parent = args.parentid)
                 try:
-                  logs = syn.store(ent)
+                  #logs = syn.store(ent)
+                  print("don't store")
                 except synapseclient.exceptions.SynapseHTTPError as e:
                   pass
 
@@ -190,7 +192,8 @@ requirements:
                   log_file.write("No Logs")
               ent = synapseclient.File(log_filename, parent = args.parentid)
               try:
-                logs = syn.store(ent)
+                #logs = syn.store(ent)
+                print("don't store")
               except synapseclient.exceptions.SynapseHTTPError as e:
                 pass
 
