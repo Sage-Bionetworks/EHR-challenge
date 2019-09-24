@@ -60,6 +60,7 @@ requirements:
           import synapseclient
           import time
           import requests
+          import subprocess
           from threading import Event
           import signal
           from functools import partial
@@ -128,22 +129,11 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-
-            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
-            print ("logs folder", os.path.isdir("/data/common/dream/logs/"))
-            for f in os.listdir("/"):
-              print (f)
-            print ("logs submission folder", os.path.isdir(log_folder))
-            if not os.path.isdir(log_folder):
-              os.makedirs(log_folder)
-            print ("logs submission folder", os.path.isdir(log_folder))
-            for f in os.listdir("/data/common/dream/logs/"):
-              print (f)
             
-            log_filename = log_folder + "training_log.txt"
+            log_filename = str(args.submissionid) + "_training_log.txt"
             
             open(log_filename,'w').close()
-            print (asbsdjk)
+
             # If the container doesn't exist, there are no logs to write out and no container to remove
             if container is not None:
               #Check if container is still running
@@ -165,6 +155,9 @@ requirements:
               log_text = container.logs()
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
+              
+              subprocess.call(["docker", "cp", os.path.abspath(log_filename), "logging:/new_logs/"])
+
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
               # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
