@@ -135,8 +135,20 @@ requirements:
             print ("creating logfile")
             #Create the logfile
             log_folder = "/logs/" + str(args.submissionid) + "/"
+            print ("/logs", os.path.isdir("/logs"))
+            
+            try:
+              print ("log folder contents")
+              for f in os.listdir("/logs"):
+                print (f)
+            except FileNotFoundError:
+              print ("/logs not found")
+
+            print (log_folder, os.path.isdir(log_folder))
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
+            
+            print (log_folder, os.path.isdir(log_folder))
             log_filename = log_folder + "training_log.txt"
             open(log_filename,'w').close()
 
