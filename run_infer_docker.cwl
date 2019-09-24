@@ -25,6 +25,8 @@ inputs:
     type: File
   - id: input_dir
     type: string
+  - id: logs_dir
+    type: string
   - id: model
     type:
       type: array
