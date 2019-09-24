@@ -218,7 +218,6 @@ requirements:
             parser.add_argument("-d", "--docker_digest", required=True, help="Docker Digest")
             parser.add_argument("-i", "--input_dir", required=True, help="Input Directory")
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
-            parser.add_argument("-l", "--log_dir", required=True, help="Log output folder")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
             args = parser.parse_args()
