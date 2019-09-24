@@ -48,15 +48,14 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  # - valueFrom: uw_validation
-  #   prefix: -i
   - valueFrom: $(inputs.input_dir)
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  #/data/common/dream/data/UW_OMOP/validation
+  - valueFrom: $(inputs.logs.dir)
+    prefix: -l
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -146,7 +145,10 @@ requirements:
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_filename = args.submissionid + "_infer_log.txt"
+            log_folder = f"/logs/{args.submissionid}/"
+            if not os.path.isdir(log_folder):
+              os.mkdir(log_folder)
+            log_filename = log_folder + "infer_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove

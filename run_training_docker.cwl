@@ -25,6 +25,8 @@ inputs:
     type: File
   - id: input_dir
     type: string
+  - id: logs_dir
+    type: string
 
 arguments: 
   - valueFrom: runDocker.py
@@ -42,9 +44,8 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-#  - valueFrom: uw_train
-#    prefix: -i
-#/data/common/dream/data/UW_OMOP/train
+  - valueFrom: $(inputs.logs.dir)
+    prefix: -l
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -91,6 +92,7 @@ requirements:
             dir = "/data/common/DREAM Challenge/data/submissions"
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
+            logs_dir = args.log_dir
             input_dir = args.input_dir
 
             print ("mounting volumes")
@@ -99,9 +101,10 @@ requirements:
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
                                input_dir:'/train:ro',
-                               model_dir:'/model:z'}
+                               model_dir:'/model:z',
+                               logs_dir:'/logs:z'}
             #All mounted volumes here in a list
-            all_volumes = [scratch_dir,input_dir,model_dir]
+            all_volumes = [scratch_dir,input_dir,model_dir,logs_dir]
             #Mount volumes
             volumes = {}
             for vol in all_volumes:
@@ -131,7 +134,10 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-            log_filename = args.submissionid + "_training_log.txt"
+            log_folder = f"/logs/{args.submissionid}/"
+            if not os.path.isdir(log_folder):
+              os.mkdir(log_folder)
+            log_filename = log_folder + "training_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
@@ -215,6 +221,7 @@ requirements:
             parser.add_argument("-d", "--docker_digest", required=True, help="Docker Digest")
             parser.add_argument("-i", "--input_dir", required=True, help="Input Directory")
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
+            parser.add_argument("-l", "--log_dir", required=True, help="Log output folder")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
             args = parser.parse_args()
