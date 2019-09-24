@@ -141,7 +141,7 @@ requirements:
               print ("log folder contents", flush=True)
               for f in os.listdir("/logs"):
                 print (f, flush=True)
-            except FileNotFoundError:
+            except:
               print ("/logs not found", flush=True)
 
             print (log_folder, os.path.isdir(log_folder))
