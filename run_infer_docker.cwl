@@ -145,7 +145,7 @@ requirements:
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_folder = f"/logs/{args.submissionid}/"
+            log_folder = "/logs/" + str(args.submissionid) + "/"
             if not os.path.isdir(log_folder):
               os.mkdir(log_folder)
             log_filename = log_folder + "infer_log.txt"
