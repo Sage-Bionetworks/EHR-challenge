@@ -131,6 +131,8 @@ requirements:
 
             log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
             print ("logs folder", os.path.isdir("/data/common/dream/logs/"))
+            for f in os.listdir("/"):
+              print (f)
             print ("logs submission folder", os.path.isdir(log_folder))
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
