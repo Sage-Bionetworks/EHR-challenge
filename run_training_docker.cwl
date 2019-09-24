@@ -135,22 +135,22 @@ requirements:
             print ("creating logfile")
             #Create the logfile
             log_folder = "/logs/" + str(args.submissionid) + "/"
-            print ("/logs", os.path.isdir("/logs"), flush=True)
+            print ("/logs", os.path.isdir("/logs"))
             
             try:
-              print ("log folder contents", flush=True)
+              print ("log folder contents")
               for f in os.listdir("/logs"):
-                print (f, flush=True)
+                print (f)
             except:
-              print ("/logs not found", flush=True)
+              print ("/logs not found")
 
             print (log_folder, os.path.isdir(log_folder))
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
             
-            print (log_folder, os.path.isdir(log_folder), flush=True)
+            print (log_folder, os.path.isdir(log_folder))
             log_filename = log_folder + "training_log.txt"
-            print (log_filename, os.path.isdir(log_filename), flush=True)
+            print (log_filename, os.path.isdir(log_filename))
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
