@@ -25,8 +25,6 @@ inputs:
     type: File
   - id: input_dir
     type: string
-  - id: logs_dir
-    type: string
   - id: model
     type:
       type: array
@@ -56,8 +54,6 @@ arguments:
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  - valueFrom: $(inputs.logs_dir)
-    prefix: -l
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -147,7 +143,7 @@ requirements:
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_folder = "/logs/" + str(args.submissionid) + "/"
+            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
             log_filename = log_folder + "infer_log.txt"
@@ -234,7 +230,6 @@ requirements:
             parser.add_argument("-d", "--docker_digest", required=True, help="Docker Digest")
             parser.add_argument("-i", "--input_dir", required=True, help="Input Directory")
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
-            parser.add_argument("-l", "--log_dir", required=True, help="Log output folder")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
             parser.add_argument("-m","--model_files", required=True, help="Model files", nargs='+')

@@ -25,8 +25,6 @@ inputs:
     type: File
   - id: input_dir
     type: string
-  - id: logs_dir
-    type: string
 
 arguments: 
   - valueFrom: runDocker.py
@@ -44,8 +42,6 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-  - valueFrom: $(inputs.logs_dir)
-    prefix: -l
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -92,7 +88,6 @@ requirements:
             dir = "/data/common/DREAM Challenge/data/submissions"
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             model_dir = os.path.join(os.getcwd(), "model")
-            logs_dir = args.log_dir
             input_dir = args.input_dir
 
             print ("mounting volumes")
@@ -101,10 +96,9 @@ requirements:
             #It has to be in this format '/output:rw'
             mounted_volumes = {scratch_dir:'/scratch:z',
                                input_dir:'/train:ro',
-                               model_dir:'/model:z',
-                               logs_dir:'/logs:z'}
+                               model_dir:'/model:z'}
             #All mounted volumes here in a list
-            all_volumes = [scratch_dir,input_dir,model_dir,logs_dir]
+            all_volumes = [scratch_dir,input_dir,model_dir]
             #Mount volumes
             volumes = {}
             for vol in all_volumes:
@@ -134,23 +128,13 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-            log_folder = "/logs/" + str(args.submissionid) + "/"
-            print ("/logs", os.path.isdir("/logs"))
-            
-            try:
-              print ("log folder contents")
-              for f in os.listdir("/logs"):
-                print (f)
-            except:
-              print ("/logs not found")
+            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
 
-            print (log_folder, os.path.isdir(log_folder))
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
             
-            print (log_folder, os.path.isdir(log_folder))
             log_filename = log_folder + "training_log.txt"
-            print (log_filename, os.path.isdir(log_filename))
+            
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove

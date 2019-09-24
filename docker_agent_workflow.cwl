@@ -166,8 +166,6 @@ steps:
         source: "#synapseConfig"
       - id: input_dir
         valueFrom: "uw_train"
-      - id: logs_dir
-        valueFrom: "uw_logs"
 
     out:
       - id: model
@@ -216,8 +214,6 @@ steps:
         source: "#run_docker_train/scratch"
       - id: input_dir
         valueFrom: "uw_validation"
-      - id: logs_dir
-        valueFrom: "uw_logs"
     out:
       - id: predictions
       - id: status
