@@ -44,7 +44,7 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-  - valueFrom: $(inputs.logs.dir)
+  - valueFrom: $(inputs.logs_dir)
     prefix: -l
 
 requirements:

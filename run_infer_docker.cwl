@@ -54,7 +54,7 @@ arguments:
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  - valueFrom: $(inputs.logs.dir)
+  - valueFrom: $(inputs.logs_dir)
     prefix: -l
 
 requirements:
