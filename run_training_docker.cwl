@@ -128,10 +128,15 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
 
+            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
+            print ("logs folder", os.path.isdir("/data/common/dream/logs/"))
+            print ("logs submission folder", os.path.isdir(log_folder))
             if not os.path.isdir(log_folder):
               os.makedirs(log_folder)
+            print ("logs submission folder", os.path.isdir(log_folder))
+            for f in os.listdir("/data/common/dream/logs/"):
+              print (f)
             
             log_filename = log_folder + "training_log.txt"
             
