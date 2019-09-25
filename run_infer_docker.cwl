@@ -48,15 +48,12 @@ arguments:
     prefix: --parentid
   - valueFrom: $(inputs.synapse_config.path)
     prefix: -c
-  # - valueFrom: uw_validation
-  #   prefix: -i
   - valueFrom: $(inputs.input_dir)
     prefix: -i
   - valueFrom: $(inputs.model)
     prefix: -m
   - valueFrom: $(inputs.scratch)
     prefix: -f
-  #/data/common/dream/data/UW_OMOP/validation
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -76,6 +73,7 @@ requirements:
           from threading import Event
           import signal
           from functools import partial
+          import subprocess
 
           logger = logging.getLogger()
           logger.setLevel(logging.INFO)
@@ -139,14 +137,15 @@ requirements:
             if container is None:
               #Run as detached, logs will stream below
               try:
-                container = client.containers.run(docker_image, 'bash "/app/infer.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='10g', stderr=True)
+                container = client.containers.run(docker_image, 'bash "/app/infer.sh"', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='30g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_filename = args.submissionid + "_infer_log.txt"
+            
+            log_filename = str(args.submissionid) + "_infer_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
@@ -161,7 +160,8 @@ requirements:
                 if statinfo.st_size > 0:
                   ent = synapseclient.File(log_filename, parent = args.parentid)
                   try:
-                    logs = syn.store(ent)
+                    #logs = syn.store(ent)
+                    print("don't store")
                   except synapseclient.exceptions.SynapseHTTPError as e:
                     pass
                   time.sleep(60)
@@ -169,12 +169,16 @@ requirements:
               log_text = container.logs()
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
+
+              subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
+
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
               if statinfo.st_size > 0: # and statinfo.st_size/1000.0 <= 50
                 ent = synapseclient.File(log_filename, parent = args.parentid)
                 try:
-                  logs = syn.store(ent)
+                  #logs = syn.store(ent)
+                  print("don't store")
                 except synapseclient.exceptions.SynapseHTTPError as e:
                   pass
 
@@ -190,7 +194,8 @@ requirements:
                   log_file.write("No Logs")
               ent = synapseclient.File(log_filename, parent = args.parentid)
               try:
-                logs = syn.store(ent)
+                #logs = syn.store(ent)
+                print("don't store")
               except synapseclient.exceptions.SynapseHTTPError as e:
                 pass
 
@@ -199,6 +204,14 @@ requirements:
               client.images.remove(docker_image, force=True)
             except:
               print("Unable to remove image")
+
+            output_folder = os.listdir(output_dir)
+            if len(output_folder) == 0:
+              raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
+            elif "predictions.csv" not in output_folder:
+              raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
+            else:
+              subprocess.check_call(["docker", "cp", os.path.join(output_dir, "predictions.csv"), "logging:/logs/" + str(args.submissionid) + "/"])
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)

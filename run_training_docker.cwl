@@ -42,9 +42,6 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-#  - valueFrom: uw_train
-#    prefix: -i
-#/data/common/dream/data/UW_OMOP/train
 
 requirements:
   - class: InitialWorkDirRequirement
@@ -63,6 +60,7 @@ requirements:
           import synapseclient
           import time
           import requests
+          import subprocess
           from threading import Event
           import signal
           from functools import partial
@@ -123,7 +121,7 @@ requirements:
               #Run as detached, logs will stream below
               print ("running container")
               try:
-                container = client.containers.run(docker_image, 'bash /app/train.sh', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='50g', stderr=True)
+                container = client.containers.run(docker_image, 'bash /app/train.sh', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='30g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
@@ -131,7 +129,8 @@ requirements:
               
             print ("creating logfile")
             #Create the logfile
-            log_filename = args.submissionid + "_training_log.txt"
+            
+            log_filename = str(args.submissionid) + "_training_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
@@ -145,7 +144,8 @@ requirements:
                 if statinfo.st_size > 0:# and statinfo.st_size/1000.0 <= 50:
                   ent = synapseclient.File(log_filename, parent = args.parentid)
                   try:
-                    logs = syn.store(ent)
+                    #logs = syn.store(ent)
+                    print("don't store")
                   except synapseclient.exceptions.SynapseHTTPError as e:
                     print (e)
                     pass
@@ -154,13 +154,18 @@ requirements:
               log_text = container.logs()
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
+              
+              subprocess.check_call(["docker", "exec", "logging", "mkdir", "logs/" + str(args.submissionid)])
+              subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
+
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
               # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
               if statinfo.st_size > 0:
                 ent = synapseclient.File(log_filename, parent = args.parentid)
                 try:
-                  logs = syn.store(ent)
+                  #logs = syn.store(ent)
+                  print("don't store")
                 except synapseclient.exceptions.SynapseHTTPError as e:
                   pass
 
@@ -176,7 +181,8 @@ requirements:
                   log_file.write("No Logs")
               ent = synapseclient.File(log_filename, parent = args.parentid)
               try:
-                logs = syn.store(ent)
+                #logs = syn.store(ent)
+                print("don't store")
               except synapseclient.exceptions.SynapseHTTPError as e:
                 pass
 
