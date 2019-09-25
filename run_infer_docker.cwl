@@ -73,6 +73,7 @@ requirements:
           from threading import Event
           import signal
           from functools import partial
+          import subprocess
 
           logger = logging.getLogger()
           logger.setLevel(logging.INFO)
