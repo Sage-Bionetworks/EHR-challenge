@@ -143,10 +143,8 @@ requirements:
                 errors = str(e) + "\n"
 
             #Create the logfile
-            log_folder = "/data/common/dream/logs/" + str(args.submissionid) + "/"
-            if not os.path.isdir(log_folder):
-              os.makedirs(log_folder)
-            log_filename = log_folder + "infer_log.txt"
+            
+            log_filename = str(args.submissionid) + "_infer_log.txt"
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
@@ -170,6 +168,9 @@ requirements:
               log_text = container.logs()
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
+
+              subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
+
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
               if statinfo.st_size > 0: # and statinfo.st_size/1000.0 <= 50
@@ -208,6 +209,8 @@ requirements:
               raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
             elif "predictions.csv" not in output_folder:
               raise Exception("No 'predictions.csv' file written to /output, please check inference docker")
+            else:
+              subprocess.check_call(["docker", "cp", os.path.join(output_dir, "predictions.csv"), "logging:/logs/" + str(args.submissionid) + "/"])
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)

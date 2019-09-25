@@ -131,7 +131,6 @@ requirements:
             #Create the logfile
             
             log_filename = str(args.submissionid) + "_training_log.txt"
-            
             open(log_filename,'w').close()
 
             # If the container doesn't exist, there are no logs to write out and no container to remove
@@ -156,8 +155,8 @@ requirements:
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
               
-              print (subprocess.check_call(["docker", "exec", "logging", "mkdir", "logs/" + str(args.submissionid)]))
-              print (subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"]))
+              subprocess.check_call(["docker", "exec", "logging", "mkdir", "logs/" + str(args.submissionid)])
+              subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
 
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
