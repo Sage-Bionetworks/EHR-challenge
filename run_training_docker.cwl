@@ -156,8 +156,8 @@ requirements:
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
               
-              subprocess.call(["docker", "exec", "logging", "mkdir /logs/" + str(args.submissionid) + "/"])
-              subprocess.call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
+              subprocess.check_call(["docker", "exec", "logging", "mkdir /logs/" + str(args.submissionid) + "/"])
+              subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
 
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
