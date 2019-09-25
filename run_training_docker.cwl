@@ -156,7 +156,7 @@ requirements:
               with open(log_filename,'w') as log_file:
                 log_file.write(log_text)
               
-              print (subprocess.check_call(["docker", "exec", "-w", "/logs", "logging", "mkdir", str(args.submissionid)]))
+              print (subprocess.check_call(["docker", "exec", "logging", "mkdir", "logs/" + str(args.submissionid)]))
               print (subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"]))
 
               statinfo = os.stat(log_filename)
