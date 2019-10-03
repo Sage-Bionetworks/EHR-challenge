@@ -183,7 +183,7 @@ requirements:
                   pass
 
               #Remove container and image after being done
-              container.remove()
+              #container.remove()
 
             statinfo = os.stat(log_filename)
             if statinfo.st_size == 0:

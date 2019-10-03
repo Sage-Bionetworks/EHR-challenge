@@ -165,7 +165,7 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        valueFrom: "uw_train"
+        valueFrom: "uw_omop_split_0_train"
 
     out:
       - id: model
@@ -213,7 +213,7 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_validation"
+        valueFrom: "uw_omop_split_0_validation"
     out:
       - id: predictions
       - id: status
