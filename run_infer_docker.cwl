@@ -88,6 +88,7 @@ requirements:
             syn.login()
 
             client = docker.from_env()
+            api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
             #Add docker.config file
             docker_image = args.docker_repository + "@" + args.docker_digest
 
@@ -183,7 +184,7 @@ requirements:
                   pass
 
               #Collect runtime
-              inspection = client.inspect_container(container.name)
+              inspection = api_client.inspect_container(container.name)
               inspection_path = str(args.submissionid) + "_evaluation_inspection.txt"
               inspection_output = open(inspection_path)
               inspection_output.write(json.dumps(inspection)).close()

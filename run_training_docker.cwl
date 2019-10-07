@@ -79,6 +79,7 @@ requirements:
             syn.login()
 
             client = docker.from_env()
+            api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
             import getpass
             print (getpass.getuser())
@@ -171,7 +172,7 @@ requirements:
                   pass
 
               #Collect runtime
-              inspection = client.inspect_container(container.name)
+              inspection = api_client.inspect_container(container.id)
               inspection_path = str(args.submissionid) + "_training_inspection.txt"
               inspection_output = open(inspection_path)
               inspection_output.write(json.dumps(inspection)).close()
