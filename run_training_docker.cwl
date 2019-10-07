@@ -56,6 +56,7 @@ requirements:
           import docker
           import argparse
           import os
+          import json
           import logging
           import synapseclient
           import time
@@ -168,6 +169,14 @@ requirements:
                   print("don't store")
                 except synapseclient.exceptions.SynapseHTTPError as e:
                   pass
+
+              #Collect runtime
+              inspection = client.inspect_container(container.name)
+              inspection_path = str(args.submissionid) + "_training_inspection.txt"
+              inspection_output = open(inspection_path)
+              inspection_output.write(json.dumps(inspection)).close()
+
+              subprocess.check_call(["docker", "cp", os.path.abspath(inspection_output), "logging:/logs/" + str(args.submissionid) + "/"])
 
               #Remove container and image after being done
               container.remove()
