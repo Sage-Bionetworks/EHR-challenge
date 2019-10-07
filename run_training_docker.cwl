@@ -121,7 +121,7 @@ requirements:
               #Run as detached, logs will stream below
               print ("running container")
               try:
-                container = client.containers.run(docker_image, 'bash /app/train.sh', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='250g', stderr=True)
+                container = client.containers.run(docker_image, 'bash /app/train.sh', detach=True, volumes = volumes, name=args.submissionid, network_disabled=True, mem_limit='300g', stderr=True)
               except docker.errors.APIError as e:
                 cont = client.containers.get(args.submissionid)
                 cont.remove()
