@@ -205,6 +205,11 @@ requirements:
             list_model = os.listdir(model_dir)
             if len(list_model) == 0:
               raise Exception("No model generated, please check training docker")
+            
+            list_scratch = os.listdir(scratch_dir)
+            if len(list_scratch) == 0:
+              scratch_fill = os.path.join(scratch_dir, "scratch_fill.txt")
+              open(scratch_fill,'w').close()
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)
