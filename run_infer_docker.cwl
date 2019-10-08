@@ -186,7 +186,7 @@ requirements:
               #Collect runtime
               inspection = api_client.inspect_container(container.name)
               inspection_path = str(args.submissionid) + "_evaluation_inspection.txt"
-              inspection_output = open(inspection_path)
+              inspection_output = open(inspection_path, "w")
               inspection_output.write(json.dumps(inspection)).close()
 
               subprocess.check_call(["docker", "cp", os.path.abspath(inspection_path), "logging:/logs/" + str(args.submissionid) + "/"])
