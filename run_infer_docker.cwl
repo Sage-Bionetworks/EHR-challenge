@@ -66,6 +66,7 @@ requirements:
           import docker
           import argparse
           import os
+          import json
           import logging
           import synapseclient
           import time
