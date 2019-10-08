@@ -177,7 +177,7 @@ requirements:
               inspection_output = open(inspection_path, "w")
               inspection_output.write(json.dumps(inspection)).close()
 
-              subprocess.check_call(["docker", "cp", os.path.abspath(inspection_output), "logging:/logs/" + str(args.submissionid) + "/"])
+              subprocess.check_call(["docker", "cp", os.path.abspath(inspection_path), "logging:/logs/" + str(args.submissionid) + "/"])
 
               #Remove container and image after being done
               container.remove()
