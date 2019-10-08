@@ -175,7 +175,8 @@ requirements:
               inspection = api_client.inspect_container(container.id)
               inspection_path = str(args.submissionid) + "_training_inspection.txt"
               inspection_output = open(inspection_path, "w")
-              inspection_output.write(json.dumps(inspection)).close()
+              inspection_output.write(json.dumps(inspection))
+              inspection_output.close()
 
               subprocess.check_call(["docker", "cp", os.path.abspath(inspection_path), "logging:/logs/" + str(args.submissionid) + "/"])
 
