@@ -59,23 +59,6 @@ steps:
       - id: docker_registry
       - id: docker_authentication
 
-#  annotate_results_received:
-#    run: annotate_submission_status.cwl
-#    in:
-#      - id: submissionid
-#        source: "#submissionId"
-#      - id: submission_status
-#        valueFrom: "EVALUATION STARTED"
-#      - id: pipe_status
-#        valueFrom: "RECEIVED"
-#      - id: to_public
-#        valueFrom: "true"
-#      - id: force_change_annotation_acl
-#        valueFrom: "true"
-#      - id: synapse_config
-#        source: "#synapseConfig"
-#    out: []
-
   notify_participants:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/notification_email.cwl
     in:
@@ -88,7 +71,7 @@ steps:
     out: []
 
   get_docker_submission:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/get_submission_docker.cwl
+    run: uw_get_submission_docker.cwl
     in:
       - id: submissionid
         source: "#get_submissionid/submissionid"
@@ -98,7 +81,23 @@ steps:
       - id: docker_repository
       - id: docker_digest
       - id: entityid
-      
+      - id: results
+
+  annotate_submission_main_userid:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
+    in:
+      - id: submissionid
+        source: "#submissionId"
+      - id: annotation_values
+        source: "#get_docker_submission/results"
+      - id: to_public
+        valueFrom: "true"
+      - id: force_change_annotation_acl
+        valueFrom: "true"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: [finished]
+
   validate_docker:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_docker.cwl
     in:
@@ -126,6 +125,8 @@ steps:
         valueFrom: "true"
       - id: synapse_config
         source: "#synapseConfig"
+      - id: previous_annotation_finished
+        source: "#annotate_submission_main_userid/finished"
     out: [finished]
 
 #  annotate_results_validated:
