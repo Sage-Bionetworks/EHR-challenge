@@ -77,4 +77,4 @@ outputs:
   - id: results
     type: File
     outputBinding:
-    glob: output.json
+      glob: output.json
