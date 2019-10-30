@@ -60,6 +60,7 @@ requirements:
           import synapseclient
           import time
           import requests
+          import subprocess
           from threading import Event
           import signal
           from functools import partial
@@ -187,12 +188,16 @@ requirements:
             list_model = os.listdir(model_dir)
             if len(list_model) == 0:
               raise Exception("No model generated, please check training docker")
-            
+            tar_command = ['tar', '-C', model_dir, '--remove-files'
+                           '.', '-cvzf', 'model_files.tar.gz']
+            subprocess.check_call(tar_command)
             list_scratch = os.listdir(scratch_dir)
             if len(list_scratch) == 0:
               scratch_fill = os.path.join(scratch_dir, "scratch_fill.txt")
               open(scratch_fill,'w').close()
-
+            tar_command = ['tar', '-C', scratch_dir, '--remove-files'
+                           '.', '-cvzf', 'scratch_files.tar.gz']
+            subprocess.check_call(tar_command)
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)
             client = docker.from_env()
@@ -231,19 +236,17 @@ requirements:
 
 
 outputs:
+
   model:
-    type:
-      type: array
-      items: File
+    type: File
     outputBinding:
-      glob: model/*
+      glob: model_files.tar.gz
+
   scratch:
-    type:
-      type: array
-      items: File
+    type: File
     outputBinding:
-      glob: scratch/*
-  
+      glob: scratch_files.tar.gz
+
   status:
     type: string
     outputBinding:
