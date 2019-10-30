@@ -102,14 +102,20 @@ requirements:
 
             scratch_dir = os.path.join(os.getcwd(), "scratch")
             os.mkdir(scratch_dir)
-            for scratch_file in scratch_files:
-              shutil.copy(scratch_file, scratch_dir)
+
+            #unzip scratch directory
+            untar_command = ['tar', '-C', scratch_dir,
+                             '-xvf', scratch_files]
+            subprocess.check_call(untar_command)
             
 
             model_dir = os.path.join(os.getcwd(), "model")
             os.mkdir(model_dir)
-            for model_file in model_files:
-              shutil.copy(model_file, model_dir)
+            
+            # unzip model directory
+            untar_command = ['tar', '-C', model_dir,
+                             '-xvf', model_files]
+            subprocess.check_call(untar_command)
 
             #These are the locations on the docker that you want your mounted volumes to be + permissions in docker (ro, rw)
             #It has to be in this format '/output:rw'

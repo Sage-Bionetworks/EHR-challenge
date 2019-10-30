@@ -208,10 +208,19 @@ requirements:
             if len(list_model) == 0:
               raise Exception("No model generated, please check training docker")
             
+            # zip up the model folder
+            tar_command = ['tar', '-C', model_dir, '--remove-files',
+                           '.', '-cvzf', 'model_files.tar.gz']
+            subprocess.check_call(tar_command)
+            
             list_scratch = os.listdir(scratch_dir)
             if len(list_scratch) == 0:
               scratch_fill = os.path.join(scratch_dir, "scratch_fill.txt")
               open(scratch_fill,'w').close()
+            # zip up the scratch folder
+            tar_command = ['tar', '-C', scratch_dir, '--remove-files',
+                           '.', '-cvzf', 'scratch_files.tar.gz']
+            subprocess.check_call(tar_command)
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)
