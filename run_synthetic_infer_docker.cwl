@@ -226,8 +226,8 @@ requirements:
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
-            parser.add_argument("-m","--model_files", required=True, help="Model files", nargs='+')
-            parser.add_argument("-f", "--scratch_files", required=True, help="scratch files", nargs="+")
+            parser.add_argument("-m","--model_files", required=True, help="Model files")
+            parser.add_argument("-f", "--scratch_files", required=True, help="scratch files")
             args = parser.parse_args()
             client = docker.from_env()
             docker_image = args.docker_repository + "@" + args.docker_digest
