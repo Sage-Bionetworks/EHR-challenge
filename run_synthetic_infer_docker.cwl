@@ -46,9 +46,9 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-  - valueFrom: $(inputs.model)
+  - valueFrom: $(inputs.model.path)
     prefix: -m
-  - valueFrom: $(inputs.scratch)
+  - valueFrom: $(inputs.scratch.path)
     prefix: -f
 
 requirements:
