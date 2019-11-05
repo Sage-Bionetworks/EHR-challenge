@@ -26,13 +26,9 @@ inputs:
   - id: input_dir
     type: string
   - id: model
-    type:
-      type: array
-      items: File
+    type: File
   - id: scratch
-    type:
-      type: array
-      items: File
+    type: File
 
 arguments: 
   - valueFrom: runDocker.py
@@ -50,9 +46,9 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
-  - valueFrom: $(inputs.model)
+  - valueFrom: $(inputs.model.path)
     prefix: -m
-  - valueFrom: $(inputs.scratch)
+  - valueFrom: $(inputs.scratch.path)
     prefix: -f
 
 requirements:
@@ -254,8 +250,8 @@ requirements:
             parser.add_argument("-c", "--synapse_config", required=True, help="credentials file")
             parser.add_argument("--parentid", required=True, help="Parent Id of submitter directory")
             parser.add_argument("--status", required=True, help="Docker image status")
-            parser.add_argument("-m","--model_files", required=True, help="Model files", nargs='+')
-            parser.add_argument("-f", "--scratch_files", required=True, help="scratch files", nargs="+")
+            parser.add_argument("-m","--model_files", required=True, help="Model files")
+            parser.add_argument("-f", "--scratch_files", required=True, help="scratch files")
             args = parser.parse_args()
             client = docker.from_env()
             docker_image = args.docker_repository + "@" + args.docker_digest

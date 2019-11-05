@@ -284,18 +284,14 @@ requirements:
 
 outputs:
   model:
-    type:
-      type: array
-      items: File
+    type: File
     outputBinding:
-      glob: model/*
-      
+      glob: model_files.tar.gz
+
   scratch:
-    type:
-      type: array
-      items: File
+    type: File
     outputBinding:
-      glob: scratch/*
+      glob: scratch_files.tar.gz
   
   status:
     type: string
