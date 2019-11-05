@@ -135,10 +135,33 @@ requirements:
             log_filename = str(args.submissionid) + "_training_log.txt"
             open(log_filename,'w').close()
 
+            stats_log = str(args.submissionid) + "_training_stats_log.txt"
+            open(stats_log,'w').close()
+
             # If the container doesn't exist, there are no logs to write out and no container to remove
             if container is not None:
+              logging_stats = "Time,Mem Usage,Perc Usage,Mem Limit\n"
+
+              stats_start = time.time()
               #Check if container is still running
               while container in client.containers.list():
+                stats_end = time.time()
+                elapsed_time = stats_end - stats_start
+                if elapsed_time > 3:
+                  stats_start = time.time()
+
+                  stats = container.stats(stream=False)
+                  timestamp = stats["read"]
+                  mem_stats = stats["memory_stats"]
+                  usage = mem_stats["usage"]
+                  limit = mem_stats["limit"]
+                  mem_perc = float(usage)/float(limit)
+
+                  logging_stats += (",".join([str(timestamp), str(usage), str(mem_perc*100), str(limit)])) + "\n"
+
+                  with open(stats_log,'w') as log_stats:
+                    log_stats.write(logging_stats)
+
                 log_text = container.logs()
                 with open(log_filename,'w') as log_file:
                   log_file.write(log_text)
@@ -159,7 +182,7 @@ requirements:
               
               subprocess.check_call(["docker", "exec", "logging", "mkdir", "logs/" + str(args.submissionid)])
               subprocess.check_call(["docker", "cp", os.path.abspath(log_filename), "logging:/logs/" + str(args.submissionid) + "/"])
-
+              subprocess.check_call(["docker", "cp", os.path.abspath(stats_log), "logging:/logs/" + str(args.submissionid) + "/"])
               statinfo = os.stat(log_filename)
               #Only store log file if > 0 bytes
               # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
