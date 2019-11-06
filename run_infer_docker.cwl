@@ -162,7 +162,22 @@ requirements:
               stats_start = time.time()
               #Check if container is still running
               while container in client.containers.list():
-                
+                stats_end = time.time()
+                elapsed_time = stats_end - stats_start
+                if elapsed_time > 3:
+                  stats_start = time.time()
+
+                  stats = container.stats(stream=False)
+                  timestamp = stats["read"]
+                  mem_stats = stats["memory_stats"]
+                  usage = mem_stats["usage"]
+                  limit = mem_stats["limit"]
+                  mem_perc = float(usage)/float(limit)
+
+                  logging_stats += (",".join([str(timestamp), str(usage), str(mem_perc*100), str(limit)])) + "\n"
+
+                  with open(stats_log,'w') as log_stats:
+                    log_stats.write(logging_stats)
 
 
                 log_text = container.logs()
@@ -203,7 +218,7 @@ requirements:
               inspection_output.close()
 
               subprocess.check_call(["docker", "cp", os.path.abspath(inspection_path), "logging:/logs/" + str(args.submissionid) + "/"])
-              #subprocess.check_call(["docker", "cp", os.path.abspath(stats_log), "logging:/logs/" + str(args.submissionid) + "/"])
+              subprocess.check_call(["docker", "cp", os.path.abspath(stats_log), "logging:/logs/" + str(args.submissionid) + "/"])
 
               #Remove container and image after being done
               container.remove()
