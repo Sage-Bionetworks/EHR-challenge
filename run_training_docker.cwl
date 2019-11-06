@@ -147,7 +147,7 @@ requirements:
               while container in client.containers.list():
                 stats_end = time.time()
                 elapsed_time = stats_end - stats_start
-                if elapsed_time > 0.05:
+                if elapsed_time > 0.5:
                   stats_start = time.time()
 
                   stats = container.stats(stream=False)
