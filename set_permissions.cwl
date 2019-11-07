@@ -27,3 +27,5 @@ arguments:
   - valueFrom: $(inputs.entityid)
   - valueFrom: $(inputs.principalid)
   - valueFrom: $(inputs.permissions)
+
+outputs: []
