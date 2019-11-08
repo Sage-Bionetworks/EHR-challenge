@@ -15,12 +15,52 @@ import synapseclient
 
 EXIT_EVENT = Event()
 
-def main(args):
+
+def create_log_file(log_filename, log_text=None):
+    """Create log file"""
+    with open(log_filename, 'w') as log_file:
+        if log_text is not None:
+            log_file.write(log_text)
+        else:
+            log_file.write("No Logs")
+
+
+def store_log_file(syn, log_filename, parentid, test=False):
+    """Store log file"""
+    statinfo = os.stat(log_filename)
+    if statinfo.st_size > 0:
+        ent = synapseclient.File(log_filename, parent=parentid)
+        # Don't store if test
+        if not test:
+            try:
+                syn.store(ent)
+            except synapseclient.exceptions.SynapseHTTPError as err:
+                print(err)
+
+
+def remove_docker_container(container_name):
+    """Remove docker container"""
+    client = docker.from_env()
+    try:
+        cont = client.containers.get(container_name)
+        cont.stop()
+        cont.remove()
+    except Exception:
+        pass
+
+
+def remove_docker_image(image_name):
+    """Remove docker image"""
+    client = docker.from_env()
+    try:
+        client.images.remove(image_name, force=True)
+    except Exception:
+        pass
+
+
+def main(syn, args):
     if args.status == "INVALID":
         raise Exception("Docker image is invalid")
-
-    syn = synapseclient.Synapse(configPath=args.synapse_config)
-    syn.login()
 
     client = docker.from_env()
 
@@ -36,13 +76,12 @@ def main(args):
     input_dir = args.input_dir
 
     print("mounting volumes")
-
     # These are the locations on the docker that you want your mounted
     # volumes to be + permissions in docker (ro, rw)
     # It has to be in this format '/output:rw'
-    mounted_volumes = {scratch_dir:'/scratch:rw',
-                       input_dir:'/train:ro',
-                       model_dir:'/model:rw'}
+    mounted_volumes = {scratch_dir: '/scratch:rw',
+                       input_dir: '/train:ro',
+                       model_dir: '/model:rw'}
     #All mounted volumes here in a list
     all_volumes = [scratch_dir, input_dir, model_dir]
     #Mount volumes
@@ -90,45 +129,21 @@ def main(args):
         # Check if container is still running
         while container in client.containers.list():
             log_text = container.logs()
-            with open(log_filename, 'w') as log_file:
-                log_file.write(log_text)
-            statinfo = os.stat(log_filename)
-            if statinfo.st_size > 0:# and statinfo.st_size/1000.0 <= 50:
-                ent = synapseclient.File(log_filename, parent=args.parentid)
-                try:
-                    syn.store(ent)
-                except synapseclient.exceptions.SynapseHTTPError as err:
-                    print(err)
-                time.sleep(60)
-        #Must run again to make sure all the logs are captured
+            create_log_file(log_filename, log_text=log_text)
+            store_log_file(syn, log_filename, args.parentid)
+            time.sleep(60)
+        # Must run again to make sure all the logs are captured
         log_text = container.logs()
-        with open(log_filename, 'w') as log_file:
-            log_file.write(log_text)
-        statinfo = os.stat(log_filename)
-        #Only store log file if > 0 bytes
-        # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
-        if statinfo.st_size > 0:
-            ent = synapseclient.File(log_filename, parent=args.parentid)
-            try:
-                logs = syn.store(ent)
-            except synapseclient.exceptions.SynapseHTTPError:
-                pass
-
-        #Remove container and image after being done
+        create_log_file(log_filename, log_text=log_text)
+        store_log_file(syn, log_filename, args.parentid)
+        # Remove container and image after being done
         container.remove()
 
     statinfo = os.stat(log_filename)
+
     if statinfo.st_size == 0:
-        with open(log_filename, 'w') as log_file:
-            if errors is not None:
-                log_file.write(errors)
-            else:
-                log_file.write("No Logs")
-        ent = synapseclient.File(log_filename, parent=args.parentid)
-        try:
-            syn.store(ent)
-        except synapseclient.exceptions.SynapseHTTPError:
-            pass
+        create_log_file(log_filename, log_text=errors)
+        store_log_file(syn, log_filename, args.parentid)
 
     print("finished training")
     #Try to remove the image
@@ -155,21 +170,22 @@ def main(args):
     subprocess.check_call(tar_command)
 
 
-def quitting(signo, _frame, submissionid=None, docker_image=None):
+def quitting(signo, _frame, submissionid=None, docker_image=None,
+             parentid=None, syn=None):
     """When quit signal, stop docker container and delete image"""
     print("Interrupted by %d, shutting down" % signo)
-    client = docker.from_env()
+    # Make sure to store logs and remove containers
     try:
         cont = client.containers.get(submissionid)
+        log_text = cont.logs()
+        log_filename = submissionid + "_training_log.txt"
+        create_log_file(log_filename, log_text=log_text)
+        store_log_file(syn, log_filename, args.parentid)
         cont.stop()
         cont.remove()
     except Exception:
         pass
-
-    try:
-        client.images.remove(docker_image, force=True)
-    except Exception:
-        pass
+    remove_docker_image(docker_image)
     EXIT_EVENT.set()
 
 
@@ -190,11 +206,15 @@ if __name__ == '__main__':
     parser.add_argument("--status", required=True, help="Docker image status")
     args = parser.parse_args()
     client = docker.from_env()
+    syn = synapseclient.Synapse(configPath=args.synapse_config)
+    syn.login()
+
     docker_image = args.docker_repository + "@" + args.docker_digest
 
     quit_sub = partial(quitting, submissionid=args.submissionid,
-                       docker_image=docker_image)
+                       docker_image=docker_image, parentid=args.parentid,
+                       syn=syn)
     for sig in ('TERM', 'HUP', 'INT'):
         signal.signal(getattr(signal, 'SIG'+sig), quit_sub)
 
-    main(args)
+    main(syn, args)
