@@ -113,9 +113,7 @@ def main(syn, args):
                                               network_disabled=True,
                                               mem_limit='30g', stderr=True)
         except docker.errors.APIError as err:
-            cont = client.containers.get(args.submissionid)
-            cont.stop()
-            cont.remove()
+            remove_docker_container(args.submissionid)
             errors = str(err) + "\n"
 
     print("creating logfile")
