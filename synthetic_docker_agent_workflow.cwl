@@ -136,7 +136,9 @@ steps:
       - id: input_dir
         valueFrom: "/home/thomasyu/train"
       - id: docker_script
-        valueFrom: "synthetic_training_docker.py"
+        default:
+          class: File
+          location: "synthetic_training_docker.py"
     out:
       - id: model
       - id: scratch

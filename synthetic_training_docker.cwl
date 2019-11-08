@@ -48,7 +48,7 @@ arguments:
 requirements:
   - class: InitialWorkDirRequirement
     listing:
-      - $(inputs.src)
+      - $(inputs.docker_script)
       - entryname: .docker/config.json
         entry: |
           {"auths": {"$(inputs.docker_registry)": {"auth": "$(inputs.docker_authentication)"}}}
