@@ -115,7 +115,7 @@ steps:
       - id: docker_authentication
 
   run_docker_train:
-    run: synthetic_training_docker.cwl
+    run: run_synthetic_training_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
