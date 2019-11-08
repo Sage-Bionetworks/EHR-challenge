@@ -115,7 +115,7 @@ steps:
       - id: docker_authentication
 
   run_docker_train:
-    run: run_synthetic_training_docker.cwl
+    run: synthetic_training_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
@@ -135,6 +135,8 @@ steps:
         source: "#synapseConfig"
       - id: input_dir
         valueFrom: "/home/thomasyu/train"
+      - id: docker_script
+        valueFrom: "synthetic_training_docker.py"
     out:
       - id: model
       - id: scratch
