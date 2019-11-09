@@ -6,14 +6,11 @@ import getpass
 import os
 import signal
 import subprocess
+import sys
 import time
-from threading import Event
 
 import docker
 import synapseclient
-
-
-EXIT_EVENT = Event()
 
 
 def create_log_file(log_filename, log_text=None):
@@ -189,7 +186,7 @@ def quitting(signo, _frame, submissionid=None, docker_image=None,
     except Exception:
         pass
     remove_docker_image(docker_image)
-    EXIT_EVENT.set()
+    sys.exit(0)
 
 
 if __name__ == '__main__':

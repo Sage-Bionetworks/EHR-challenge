@@ -4,14 +4,11 @@ from functools import partial
 import os
 import signal
 import subprocess
-from threading import Event
+import sys
 import time
 
 import docker
 import synapseclient
-
-
-EXIT_SET = Event()
 
 
 def main(args):
@@ -164,7 +161,7 @@ def quitting(signo, _frame, submissionid=None, docker_image=None):
         client.images.remove(docker_image, force=True)
     except Exception:
         pass
-    EXIT_SET.set()
+    sys.exit(0)
 
 
 if __name__ == '__main__':
