@@ -46,7 +46,7 @@ def remove_docker_container(container_name):
         cont.stop()
         cont.remove()
     except Exception:
-        pass
+        print("Unable to remove container")
 
 
 def remove_docker_image(image_name):
@@ -55,7 +55,7 @@ def remove_docker_image(image_name):
     try:
         client.images.remove(image_name, force=True)
     except Exception:
-        pass
+        print("Unable to remove image")
 
 
 def tar(directory, tar_filename):
