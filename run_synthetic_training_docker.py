@@ -46,7 +46,7 @@ def remove_docker_container(container_name):
         cont.stop()
         cont.remove()
     except Exception:
-        pass
+        print("Unable to remove container")
 
 
 def remove_docker_image(image_name):
@@ -55,7 +55,19 @@ def remove_docker_image(image_name):
     try:
         client.images.remove(image_name, force=True)
     except Exception:
-        pass
+        print("Unable to remove image")
+
+
+def tar(directory, tar_filename):
+    """Tar all files in a directory and remove the files
+
+    Args:
+        directory: Directory path to files to tar
+        tar_filename:  Name of tar file
+    """
+    tar_command = ['tar', '-C', directory, '--remove-files', '.', '-cvzf',
+                   tar_filename]
+    subprocess.check_call(tar_command)
 
 
 def main(syn, args):
@@ -144,28 +156,21 @@ def main(syn, args):
         store_log_file(syn, log_filename, args.parentid)
 
     print("finished training")
-    #Try to remove the image
-    try:
-        client.images.remove(docker_image, force=True)
-    except Exception:
-        print("Unable to remove image")
+    # Try to remove the image
+    remove_docker_image(docker_image)
 
     list_model = os.listdir(model_dir)
     if not list_model:
         raise Exception("No model generated, please check training docker")
 
-    tar_command = ['tar', '-C', model_dir, '--remove-files',
-                   '.', '-cvzf', 'model_files.tar.gz']
+    tar(model_dir, 'model_files.tar.gz')
 
-    subprocess.check_call(tar_command)
     list_scratch = os.listdir(scratch_dir)
     if not list_scratch:
         scratch_fill = os.path.join(scratch_dir, "scratch_fill.txt")
         open(scratch_fill, 'w').close()
 
-    tar_command = ['tar', '-C', scratch_dir, '--remove-files',
-                   '.', '-cvzf', 'scratch_files.tar.gz']
-    subprocess.check_call(tar_command)
+    tar(scratch_dir, 'scratch_files.tar.gz')
 
 
 def quitting(signo, _frame, submissionid=None, docker_image=None,
