@@ -252,9 +252,14 @@ requirements:
 
           def quit(signo, _frame, submissionid=None, docker_image=None):
             print("Interrupted by %d, shutting down" % signo)
+            subprocess.check_call(["docker", "exec", "logging",
+                                   "mkdir", "logs/" + str(args.submissionid)])
+            subprocess.check_call(["docker", "cp", os.path.abspath(log_filename),
+                                   "logging:/logs/" + str(args.submissionid) + "/"])
             client = docker.from_env()
             try:
               cont = client.containers.get(submissionid)
+              cont.stop()
               cont.remove()
             except Exception as e:
               pass

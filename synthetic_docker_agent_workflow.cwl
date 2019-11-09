@@ -115,7 +115,7 @@ steps:
       - id: docker_authentication
 
   run_docker_train:
-    run: synthetic_training_docker.cwl
+    run: run_synthetic_training_docker.cwl
     in:
       - id: docker_repository
         source: "#get_docker_submission/docker_repository"
@@ -138,7 +138,7 @@ steps:
       - id: docker_script
         default:
           class: File
-          location: "synthetic_training_docker.py"
+          location: "run_synthetic_training_docker.py"
     out:
       - id: model
       - id: scratch
@@ -169,6 +169,10 @@ steps:
         source: "#run_docker_train/scratch"
       - id: input_dir
         valueFrom: "/home/thomasyu/validation"
+      - id: docker_script
+        default:
+          class: File
+          location: "run_synthetic_infer_docker.py"
     out:
       - id: predictions
       - id: status
