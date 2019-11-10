@@ -167,6 +167,10 @@ steps:
         source: "#synapseConfig"
       - id: input_dir
         valueFrom: "uw_omop_train"
+      - id: docker_script
+        default:
+          class: File
+          location: "run_training_docker.py"
 
     out:
       - id: model
