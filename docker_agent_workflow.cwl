@@ -30,6 +30,19 @@ outputs: []
 
 steps:
 
+  set_permissions:
+    run: set_permissions.cwl
+    in:
+      - id: entityid
+        source: "#submitterUploadSynId"
+      - id: principalid
+        valueFrom: "3386536"
+      - id: permissions
+        valueFrom: "download"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out: []
+
   get_submissionid:
     run: get_linked_submissionid.cwl
     in:
