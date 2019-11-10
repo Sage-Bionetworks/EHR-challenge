@@ -220,7 +220,7 @@ def quitting(signo, _frame, submissionid=None, docker_image=None,
         log_text = cont.logs()
         log_filename = submissionid + "_training_log.txt"
         create_log_file(log_filename, log_text=log_text)
-        store_log_file(syn, log_filename, args.parentid)
+        store_log_file(syn, log_filename, args.parentid, test=True)
         cont.stop()
         cont.remove()
     except Exception:
