@@ -52,7 +52,6 @@ requirements:
       - entryname: .docker/config.json
         entry: |
           {"auths": {"$(inputs.docker_registry)": {"auth": "$(inputs.docker_authentication)"}}}
-
   - class: InlineJavascriptRequirement
 
 outputs:
