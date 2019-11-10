@@ -184,7 +184,6 @@ steps:
         default:
           class: File
           location: "run_training_docker.py"
-
     out:
       - id: model
       - id: scratch
@@ -232,6 +231,10 @@ steps:
         source: "#run_docker_train/scratch"
       - id: input_dir
         valueFrom: "uw_omop_evaluation"
+      - id: docker_script
+        default:
+          class: File
+          location: "run_infer_docker.py"
     out:
       - id: predictions
       - id: status
