@@ -135,6 +135,10 @@ steps:
         source: "#synapseConfig"
       - id: input_dir
         valueFrom: "/home/thomasyu/train"
+      - id: docker_script
+        default:
+          class: File
+          location: "run_training_docker.py"
     out:
       - id: model
       - id: scratch
