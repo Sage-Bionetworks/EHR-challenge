@@ -239,38 +239,38 @@ steps:
       - id: predictions
       - id: status
 
-  upload_results:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/upload_to_synapse.cwl
-    in:
-      - id: infile
-        source: "#run_docker_infer/predictions"
-      - id: parentid
-        source: "#adminUploadSynId"
-      - id: used_entity
-        source: "#get_docker_submission/entityid"
-      - id: executed_entity
-        source: "#workflowSynapseId"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out:
-      - id: uploaded_fileid
-      - id: uploaded_file_version
-      - id: results
+#  upload_results:
+#    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/upload_to_synapse.cwl
+#    in:
+#      - id: infile
+#        source: "#run_docker_infer/predictions"
+#      - id: parentid
+#        source: "#adminUploadSynId"
+#      - id: used_entity
+#        source: "#get_docker_submission/entityid"
+#      - id: executed_entity
+#        source: "#workflowSynapseId"
+#      - id: synapse_config
+#        source: "#synapseConfig"
+#    out:
+#      - id: uploaded_fileid
+#      - id: uploaded_file_version
+#      - id: results
 
-  annotate_docker_upload_results:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: annotation_values
-        source: "#upload_results/results"
-      - id: to_public
-        valueFrom: "true"
-      - id: force_change_annotation_acl
-        valueFrom: "true"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: [finished]
+#  annotate_docker_upload_results:
+#    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
+#    in:
+#      - id: submissionid
+#        source: "#submissionId"
+#      - id: annotation_values
+#        source: "#upload_results/results"
+#      - id: to_public
+#        valueFrom: "true"
+#      - id: force_change_annotation_acl
+#        valueFrom: "true"
+#      - id: synapse_config
+#        source: "#synapseConfig"
+#    out: [finished]
 
 #  annotate_results_inferred:
 #    run: annotate_submission_status.cwl
