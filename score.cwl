@@ -57,7 +57,7 @@ requirements:
           args = parser.parse_args()
           if args.status == "VALIDATED":
             goldstandard = pd.read_csv(args.goldstandard)
-            goldstandard = goldstandard.sample(frac=1)
+            #goldstandard = goldstandard.sample(frac=1)
             predictions = pd.read_csv(args.submissionfile)
 
             evaluation = goldstandard.merge(predictions, how="inner", on="person_id")
