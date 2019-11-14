@@ -27,7 +27,8 @@ compute_scores <- function(submission_path, goldstandard_path) {
   roc<-roc.curve(x,y)
   pr <- pr.curve(x,y)
   # just return roc and pr
-  c('score_AUC'=roc$auc, 'score_PRAUC'=pr$auc.integral)
+  c('score_AUC' = round(roc$auc, 6),
+    'score_PRAUC' = round(pr$auc.integral, 6))
 }
 
 if (args$status == "VALIDATED") {
