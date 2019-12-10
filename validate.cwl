@@ -112,7 +112,7 @@ requirements:
             'prediction_file_errors':"\n".join(invalid_reasons),
             'prediction_file_status':prediction_file_status,
             'submission_status': submission_status,
-            'round': 3}
+            'round': 2}
           with open(args.results, 'w') as o:
               o.write(json.dumps(result))
      
