@@ -44,6 +44,8 @@ result_list = list()
 for (key in names(scores)) {
   result_list[[key]] = scores[[key]]
 }
+result_list$score_AUC = as.numeric(result_list$score_AUC)
+result_list$score_PRAUC = as.numeric(result_list$score_PRAUC)
 
 export_json <- toJSON(result_list, auto_unbox = TRUE, pretty=T)
 write(export_json, args$results)
