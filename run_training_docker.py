@@ -140,26 +140,7 @@ def main(syn, args):
         stats_start = time.time()
         # Check if container is still running
         while container in client.containers.list():
-            # stats_end = time.time()
-            # elapsed_time = stats_end - stats_start
-            # if elapsed_time > 0.5:
-            #     stats_start = time.time()
-            #     try:
-            #         stats = container.stats(stream=False)
-            #     except Exception:
-            #         stats = False
-            #     if stats:
-            #         timestamp = stats['read']
-            #         mem_stats = stats['memory_stats']
-            #         usage = mem_stats.get('usage', 0)
-            #         limit = mem_stats.get('limit', 1)
-            #         mem_perc = float(usage)/float(limit)
-            #         logging_stats += (",".join([str(timestamp), str(usage),
-            #                                     str(mem_perc*100),
-            #                                     str(limit)])) + "\n"
-            #     with open(stats_log, 'w') as log_stats:
-            #         log_stats.write(logging_stats)
-            log_text = container.logs()
+            log_text = container.logs(timestamps=True)
             create_log_file(log_filename, log_text=log_text)
             store_log_file(syn, log_filename, args.parentid, test=True)
             time.sleep(60)
