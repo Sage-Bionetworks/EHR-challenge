@@ -101,9 +101,9 @@ steps:
       - id: annotation_values
         source: "#validate_docker/results"
       - id: to_public
-        default: "true"
+        default: true
       - id: force_change_annotation_acl
-        default: "true"
+        default: true
       - id: synapse_config
         source: "#synapseConfig"
     out: [finished]
@@ -206,9 +206,9 @@ steps:
       - id: annotation_values
         source: "#upload_results/results"
       - id: to_public
-        default: "true"
+        default: true
       - id: force_change_annotation_acl
-        default: "true"
+        default: true
       - id: synapse_config
         source: "#synapseConfig"
     out: [finished]
@@ -254,9 +254,9 @@ steps:
       - id: annotation_values
         source: "#validation/results"
       - id: to_public
-        default: "true"
+        default: true
       - id: force_change_annotation_acl
-        default: "true"
+        default: true
       - id: synapse_config
         source: "#synapseConfig"
     out: [finished]
