@@ -270,7 +270,7 @@ steps:
       - id: parentid
         source: "#submitterUploadSynId"
       - id: evaluationid
-        valueFrom: "9614308"
+        valueFrom: "9614404"
       - id: previous_annotation_finished
         source: "#annotate_validation_with_output/finished"
 #      - id: previous_email_finished
