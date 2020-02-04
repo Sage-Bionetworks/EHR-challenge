@@ -385,7 +385,7 @@ steps:
       - id: annotation_values
         source: "#final_validation/results"
       - id: to_public
-        valueFrom: "true"
+        valueFrom: "false"
       - id: force_change_annotation_acl
         valueFrom: "true"
       - id: synapse_config
