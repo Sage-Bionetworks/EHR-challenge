@@ -29,6 +29,7 @@ def main(args):
     input_dir = args.input_dir
     model_files = args.model_files
     scratch_files = args.scratch_files
+    stage = args.stage
 
     scratch_dir = os.path.join(os.getcwd(), "scratch")
     os.mkdir(scratch_dir)
@@ -85,7 +86,7 @@ def main(args):
             errors = str(err) + "\n"
 
     #Create the logfile
-    log_filename = args.submissionid + "_infer_log.txt"
+    log_filename = args.submissionid + "_" + str(stage) + "_log.txt"
     open(log_filename, 'w').close()
 
     # If the container doesn't exist, there are no logs to write out and no
@@ -124,7 +125,7 @@ def main(args):
                 pass
         # Collect runtime
         inspection = api_client.inspect_container(container.name)
-        inspection_path = str(args.submissionid) + "_evaluation_inspection.txt"
+        inspection_path = str(args.submissionid) + "_" + str(stage) + "_inspection.txt"
         with open(inspection_path, "w") as inspection_output:
             json.dump(inspection, inspection_output, indent=4)
 

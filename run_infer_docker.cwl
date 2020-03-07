@@ -25,6 +25,8 @@ inputs:
     type: File
   - id: input_dir
     type: string
+  - id: stage
+    type: string
   - id: model
     type: File
   - id: scratch
@@ -48,6 +50,8 @@ arguments:
     prefix: -c
   - valueFrom: $(inputs.input_dir)
     prefix: -i
+  - valueFrom: $(inputs.stage)
+    prefix: --stage
   - valueFrom: $(inputs.model.path)
     prefix: -m
   - valueFrom: $(inputs.scratch.path)

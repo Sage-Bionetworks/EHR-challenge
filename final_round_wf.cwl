@@ -57,7 +57,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
     in:
       - id: synapseid
-        valueFrom: "syn21042019"
+        valueFrom: "syn21741751"
       - id: synapse_config
         source: "#synapseConfig"
     out:
@@ -67,7 +67,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
     in:
       - id: synapseid
-        valueFrom: "syn21042019"
+        valueFrom: "syn21741754"
       - id: synapse_config
         source: "#synapseConfig"
     out:
@@ -82,16 +82,16 @@ steps:
       - id: docker_registry
       - id: docker_authentication
 
-  notify_participants:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/notification_email.cwl
-    in:
-      - id: submissionid
-        source: "#get_submissionid/submissionid"
-      - id: synapse_config
-        source: "#synapseConfig"
-      - id: parentid
-        source: "#submitterUploadSynId"
-    out: []
+  #notify_participants:
+  #  run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/notification_email.cwl
+  #  in:
+  #    - id: submissionid
+  #      source: "#get_submissionid/submissionid"
+  #    - id: synapse_config
+  #      source: "#synapseConfig"
+  #    - id: parentid
+  #      source: "#submitterUploadSynId"
+  #  out: []
 
   get_docker_submission:
     run: uw_get_submission_docker.cwl
@@ -172,7 +172,7 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        valueFrom: "uw_omop_train"
+        valueFrom: "uw_omop_validation_training"
       - id: docker_script
         default:
           class: File
@@ -206,7 +206,9 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_evaluation"
+        valueFrom: "uw_omop_validation_evaluation"
+      - id: stage
+        valueFrom: "evaluation"
       - id: docker_script
         default:
           class: File
@@ -235,19 +237,19 @@ steps:
       - id: status
       - id: invalid_reasons
   
-  validation_email:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
-    in:
-      - id: submissionid
-        source: "#get_submissionid/submissionid"
-      - id: synapse_config
-        source: "#synapseConfig"
-      - id: status
-        source: "#validation/status"
-      - id: invalid_reasons
-        source: "#validation/invalid_reasons"
-
-    out: []
+  #validation_email:
+  #  run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
+  #  in:
+  #    - id: submissionid
+  #      source: "#get_submissionid/submissionid"
+  #    - id: synapse_config
+  #      source: "#synapseConfig"
+  #    - id: status
+  #      source: "#validation/status"
+  #    - id: invalid_reasons
+  #      source: "#validation/invalid_reasons"
+  #
+  #  out: []
 
   annotate_validation_with_output:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
@@ -328,7 +330,9 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_evaluation"
+        valueFrom: "uw_omop_validation_validation"
+      - id: stage
+        valueFrom: "validation"
       - id: docker_script
         default:
           class: File
@@ -364,18 +368,18 @@ steps:
 #        source: "#final_validation/results"
 #    out: [results]
 
-  final_validation_email:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
-    in:
-      - id: submissionid
-        source: "#get_submissionid/submissionid"
-      - id: synapse_config
-        source: "#synapseConfig"
-      - id: status
-        source: "#final_validation/status"
-      - id: invalid_reasons
-        source: "#final_validation/invalid_reasons"
-    out: []
+#  final_validation_email:
+#    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
+#    in:
+#      - id: submissionid
+#        source: "#get_submissionid/submissionid"
+#      - id: synapse_config
+#        source: "#synapseConfig"
+#      - id: status
+#        source: "#final_validation/status"
+#      - id: invalid_reasons
+#        source: "#final_validation/invalid_reasons"
+#    out: []
 
   final_annotate_validation_with_output:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/annotate_submission.cwl
