@@ -206,7 +206,7 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_validation_evaluation"
+        valueFrom: "uw_omop_evaluation"
       - id: stage
         valueFrom: "evaluation"
       - id: docker_script
