@@ -33,7 +33,8 @@ def store_log_file(syn, log_filename, parentid, test=False):
             try:
                 syn.store(ent)
             except synapseclient.exceptions.SynapseHTTPError as err:
-                print(err)
+                #print(err)
+                print ("error with storing log file")
 
 
 def remove_docker_container(container_name):
@@ -75,7 +76,7 @@ def main(syn, args):
     client = docker.from_env()
     api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 
-    print(getpass.getuser())
+    #print(getpass.getuser())
 
     #Add docker.config file
     docker_image = args.docker_repository + "@" + args.docker_digest
