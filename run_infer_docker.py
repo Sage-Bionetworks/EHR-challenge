@@ -163,7 +163,7 @@ def main(args):
         raise Exception("No 'predictions.csv' file written to /output, "
                         "please check inference docker")
     else:
-        subprocess.check_call(["docker", "cp", os.path.join(output_dir, "predictions.csv"),
+        subprocess.check_call(["docker", "cp", os.path.join(output_dir,  str(stage) + "_predictions.csv"),
                                "logging:/logs/" + str(args.submissionid) + "/"])
 
 
