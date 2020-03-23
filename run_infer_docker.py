@@ -203,6 +203,8 @@ if __name__ == '__main__':
                         help="Model files")
     parser.add_argument("-f", "--scratch_files", required=True,
                         help="scratch files")
+    parser.add_argument("--stage", required=True, help="stage of pipeline")
+    
     args = parser.parse_args()
     client = docker.from_env()
     docker_image = args.docker_repository + "@" + args.docker_digest
