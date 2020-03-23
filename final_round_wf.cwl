@@ -361,12 +361,12 @@ steps:
       - id: status
       - id: invalid_reasons
 
-#  final_validation_results:
-#    run: create_final_json.cwl
-#    in:
-#      - id: input_json
-#        source: "#final_validation/results"
-#    out: [results]
+  final_validation_results:
+    run: create_final_json.cwl
+    in:
+      - id: input_json
+        source: "#final_validation/results"
+    out: [results]
 
 #  final_validation_email:
 #    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
