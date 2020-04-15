@@ -231,7 +231,8 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: goldstandard
-        source: "#download_goldstandard/filepath"
+        #source: "#download_goldstandard/filepath"
+        source: "#final_download_goldstandard/filepath"
     out:
       - id: results
       - id: status
@@ -272,7 +273,8 @@ steps:
       - id: inputfile
         source: "#run_docker_infer/predictions"
       - id: goldstandard
-        source: "#download_goldstandard/filepath"
+        #source: "#download_goldstandard/filepath"
+        source: "#final_download_goldstandard/filepath"
       - id: submissionid
         source: "#submissionId"
       - id: status
