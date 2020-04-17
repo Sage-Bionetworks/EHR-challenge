@@ -206,7 +206,7 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_validation_validation"
+        valueFrom: "uw_omop_evaluation"
       - id: stage
         valueFrom: "evaluation"
       - id: docker_script
@@ -231,8 +231,8 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: goldstandard
-        #source: "#download_goldstandard/filepath"
-        source: "#final_download_goldstandard/filepath"
+        source: "#download_goldstandard/filepath"
+        #source: "#final_download_goldstandard/filepath"
     out:
       - id: results
       - id: status
