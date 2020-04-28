@@ -172,7 +172,8 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        valueFrom: "uw_omop_validation_training"
+        valueFrom: "uw_omop_training"
+        #"uw_omop_validation_training"
       - id: docker_script
         default:
           class: File
@@ -332,7 +333,8 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_validation_validation"
+        valueFrom: "uw_omop_evaluation"
+        #"uw_omop_validation_validation"
       - id: stage
         valueFrom: "validation"
       - id: docker_script
