@@ -57,7 +57,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
     in:
       - id: synapseid
-        valueFrom: "syn21042019"
+        valueFrom: "syn21741751"
         #valueFrom: "syn21042019"
       - id: synapse_config
         source: "#synapseConfig"
@@ -68,7 +68,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
     in:
       - id: synapseid
-        valueFrom: "syn21042019"
+        valueFrom: "syn21741754"
         #valueFrom: "syn21741754"
       - id: synapse_config
         source: "#synapseConfig"
@@ -174,8 +174,7 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        valueFrom: "uw_omop_train"
-        #"uw_omop_validation_training"
+        valueFrom: "uw_omop_validation_training"
       - id: docker_script
         default:
           class: File
@@ -209,7 +208,7 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_evaluation"
+        valueFrom: "uw_omop_validation_evaluation"
       - id: stage
         valueFrom: "evaluation"
       - id: docker_script
@@ -335,8 +334,7 @@ steps:
       - id: scratch
         source: "#run_docker_train/scratch"
       - id: input_dir
-        valueFrom: "uw_omop_evaluation"
-        #"uw_omop_validation_validation"
+        valueFrom: "uw_omop_validation_validation"
       - id: stage
         valueFrom: "validation"
       - id: docker_script
