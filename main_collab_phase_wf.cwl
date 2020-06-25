@@ -43,16 +43,6 @@ steps:
         source: "#synapseConfig"
     out: []
 
-  download_goldstandard:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
-    in:
-      - id: synapseid
-        valueFrom: "syn20691277"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out:
-      - id: filepath
-
   notify_participants:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/notification_email.cwl
     in:
