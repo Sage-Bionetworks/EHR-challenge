@@ -12,6 +12,17 @@ import docker
 import synapseclient
 
 
+def create_log_file(log_filename, log_text=None):
+    """Create log file"""
+    with open(log_filename, 'w') as log_file:
+        if log_text is not None:
+            if isinstance(log_text, bytes):
+                log_text = log_text.decode('utf-8')
+            log_file.write(log_text.encode("ascii", "ignore").decode("ascii"))
+        else:
+            log_file.write("No Logs")
+
+
 def main(args):
     if args.status == "INVALID":
         raise Exception("Docker image is invalid")
@@ -95,8 +106,7 @@ def main(args):
         # Check if container is still running
         while container in client.containers.list():
             log_text = container.logs()
-            with open(log_filename, 'w') as log_file:
-                log_file.write(log_text)
+            create_log_file(log_filename, log_text)
             statinfo = os.stat(log_filename)
             # if statinfo.st_size > 0 and statinfo.st_size/1000.0 <= 50:
             if statinfo.st_size > 0:
@@ -104,13 +114,12 @@ def main(args):
                 try:
                     # syn.store(ent)
                     print("don't store")
-                except synapseclient.exceptions.SynapseHTTPError:
+                except synapseclient.core.exceptions.SynapseHTTPError:
                     pass
                 time.sleep(60)
         # Must run again to make sure all the logs are captured
         log_text = container.logs()
-        with open(log_filename, 'w') as log_file:
-            log_file.write(log_text)
+        create_log_file(log_filename, log_text)
 
         subprocess.check_call(["docker", "cp", os.path.abspath(log_filename),
                                "logging:/logs/" + str(args.submissionid) + "/"])
@@ -121,7 +130,7 @@ def main(args):
             try:
                 # syn.store(ent)
                 print("dont store")
-            except synapseclient.exceptions.SynapseHTTPError:
+            except synapseclient.core.exceptions.SynapseHTTPError:
                 pass
         # Collect runtime
         inspection = api_client.inspect_container(container.name)
@@ -137,16 +146,12 @@ def main(args):
 
     statinfo = os.stat(log_filename)
     if statinfo.st_size == 0:
-        with open(log_filename, 'w') as log_file:
-            if errors is not None:
-                log_file.write(errors)
-            else:
-                log_file.write("No Logs")
+        create_log_file(log_filename, log_text)
         ent = synapseclient.File(log_filename, parent=args.parentid)
         try:
             # syn.store(ent)
             print("don't store")
-        except synapseclient.exceptions.SynapseHTTPError:
+        except synapseclient.core.exceptions.SynapseHTTPError:
             pass
 
     #Try to remove the image
