@@ -52,17 +52,6 @@ steps:
         source: "#synapseConfig"
     out:
       - id: submissionid
-  
-  download_goldstandard:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
-    in:
-      - id: synapseid
-        valueFrom: "syn21741751"
-        #valueFrom: "syn21042019"
-      - id: synapse_config
-        source: "#synapseConfig"
-    out:
-      - id: filepath
 
   final_download_goldstandard:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/download_from_synapse.cwl
