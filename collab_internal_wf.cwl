@@ -173,21 +173,6 @@ steps:
       - id: scratch
       - id: status
 
-  annotate_submission_with_output:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v2.7/annotate_submission.cwl
-    in:
-      - id: submissionid
-        source: "#submissionId"
-      - id: annotation_values
-        source: "#scoring/results"
-      - id: to_public
-        default: false
-      - id: force
-        default: true
-      - id: synapse_config
-        source: "#synapseConfig"
-    out: [finished]
-
   final_run_docker_infer:
     run: run_infer_docker.cwl
     in:
