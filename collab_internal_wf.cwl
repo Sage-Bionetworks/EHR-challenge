@@ -236,16 +236,18 @@ steps:
     out: [results]
 
   final_validation_email:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/validate_email.cwl
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v2.7/validate_email.cwl
     in:
-     - id: submissionid
-       source: "#get_submissionid/submissionid"
-     - id: synapse_config
-       source: "#synapseConfig"
-     - id: status
-       source: "#final_validation/status"
-     - id: invalid_reasons
-       source: "#final_validation/invalid_reasons"
+      - id: submissionid
+        source: "#get_submissionid/submissionid"
+      - id: synapse_config
+        source: "#synapseConfig"
+      - id: status
+        source: "#final_validation/status"
+      - id: invalid_reasons
+        source: "#final_validation/invalid_reasons"
+      - id: errors_only
+        default: true
     out: []
 
   final_annotate_validation_with_output:
@@ -277,12 +279,12 @@ steps:
     out:
       - id: results
 
-  final_scoring_results:
-    run: create_final_json.cwl
-    in:
-      - id: input_json
-        source: "#final_scoring/results"
-    out: [results]
+#   final_scoring_results:
+#     run: create_final_json.cwl
+#     in:
+#       - id: input_json
+#         source: "#final_scoring/results"
+#     out: [results]
 
   final_score_email:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v1.6/score_email.cwl
@@ -292,7 +294,7 @@ steps:
      - id: synapse_config
        source: "#synapseConfig"
      - id: results
-       source: "#final_scoring_results/results"
+       source: "#final_scoring/results"
     out: []
 
   final_annotate_submission_with_output:
@@ -301,7 +303,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: annotation_values
-        source: "#final_scoring_results/results"
+        source: "#final_scoring/results"
       - id: to_public
         default: false
       - id: force
