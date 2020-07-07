@@ -171,6 +171,7 @@ steps:
     out:
       - id: model
       - id: scratch
+      - id: output
       - id: status
 
   final_run_docker_infer:

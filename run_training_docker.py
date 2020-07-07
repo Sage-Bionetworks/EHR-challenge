@@ -87,6 +87,7 @@ def main(syn, args):
     # directory = "/data/common/DREAM Challenge/data/submissions"
     scratch_dir = os.path.join(os.getcwd(), "scratch")
     model_dir = os.path.join(os.getcwd(), "model")
+    output_dir = os.path.join(os.getcwd(), "output")
     input_dir = args.input_dir
 
     print("mounting volumes")
@@ -95,7 +96,8 @@ def main(syn, args):
     # It has to be in this format '/output:rw'
     mounted_volumes = {scratch_dir: '/scratch:z',
                        input_dir: '/train:ro',
-                       model_dir: '/model:z'}
+                       model_dir: '/model:z',
+                       output_dir: '/output:z'}
     #All mounted volumes here in a list
     all_volumes = [scratch_dir, input_dir, model_dir]
     #Mount volumes
@@ -180,12 +182,21 @@ def main(syn, args):
     # Try to remove the image
     remove_docker_image(docker_image)
 
+    ## Gather model directory
     list_model = os.listdir(model_dir)
     if not list_model:
         raise Exception("No model generated, please check training docker")
 
     tar(model_dir, 'model_files.tar.gz')
 
+    ## Gather output directory
+    list_output = os.listdir(output_dir)
+    if not list_output:
+        raise Exception("No output features generated, please check training docker")
+
+    tar(output_dir, 'output_files.tar.gz')
+
+    ## Gather scratch directory
     list_scratch = os.listdir(scratch_dir)
     if not list_scratch:
         scratch_fill = os.path.join(scratch_dir, "scratch_fill.txt")

@@ -66,6 +66,11 @@ outputs:
     type: File
     outputBinding:
       glob: scratch_files.tar.gz
+
+  output:
+    type: File
+    outputBinding:
+      glob: output_files.tar.gz
   
   status:
     type: string
