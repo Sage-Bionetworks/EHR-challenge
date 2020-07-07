@@ -182,19 +182,16 @@ def main(syn, args):
     # Try to remove the image
     remove_docker_image(docker_image)
 
+
     ## Gather model directory
     list_model = os.listdir(model_dir)
     if not list_model:
-        raise Exception("No model generated, please check training docker")
+        model_fill = os.path.join(model_dir, "model_fill.txt")
+        open(model_fill, 'w').close()
+        #raise Exception("No model generated, please check training docker")
 
     tar(model_dir, 'model_files.tar.gz')
 
-    ## Gather output directory
-    list_output = os.listdir(output_dir)
-    if not list_output:
-        raise Exception("No output features generated, please check training docker")
-
-    tar(output_dir, 'output_files.tar.gz')
 
     ## Gather scratch directory
     list_scratch = os.listdir(scratch_dir)
@@ -203,6 +200,18 @@ def main(syn, args):
         open(scratch_fill, 'w').close()
 
     tar(scratch_dir, 'scratch_files.tar.gz')
+
+
+    ## Gather output directory
+    list_output = os.listdir(output_dir)
+    if not list_output:
+        output_fill = os.path.join(output_dir, "output_fill.txt")
+        open(output_fill, 'w').close()
+    
+    subprocess.check_call(["docker", "cp", output_dir + "/",
+                            "logging:/logs/" + str(args.submissionid) + "/"])
+
+    tar(output_dir, 'output_files.tar.gz')
 
 
 def quitting(signo, _frame, submissionid=None, docker_image=None,
