@@ -162,16 +162,11 @@ def main(args):
 
     output_folder = os.listdir(output_dir)
     if not output_folder:
-        raise Exception("No 'predictions.csv' file written to /output, "
-                        "please check inference docker")
-    elif "predictions.csv" not in output_folder:
-        raise Exception("No 'predictions.csv' file written to /output, "
-                        "please check inference docker")
-    else:
-        #subprocess.check_call(["docker", "cp", os.path.join(output_dir,  "predictions.csv"),
-        #                       "logging:/logs/" + str(args.submissionid) + "/" + str(stage) + "_predictions.csv"])
-        subprocess.check_call(["docker", "cp", output_dir + "/",
-                               "logging:/logs/" + str(args.submissionid) + "/"])
+        output_fill = os.path.join(output_dir, "output_fill.txt")
+        open(output_fill, 'w').close()
+
+    subprocess.check_call(["docker", "cp", output_dir + "/",
+                            "logging:/logs/" + str(args.submissionid) + "/"])
 
 
 def quitting(signo, _frame, submissionid=None, docker_image=None):
