@@ -99,7 +99,7 @@ def main(syn, args):
                        model_dir: '/model:z',
                        output_dir: '/output:z'}
     #All mounted volumes here in a list
-    all_volumes = [scratch_dir, input_dir, model_dir]
+    all_volumes = [scratch_dir, input_dir, model_dir, output_dir]
     #Mount volumes
     volumes = {}
     for vol in all_volumes:
