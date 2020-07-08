@@ -166,7 +166,7 @@ def main(args):
         open(output_fill, 'w').close()
 
     subprocess.check_call(["docker", "cp", output_dir + "/",
-                            "logging:/logs/" + str(args.submissionid) + "/"])
+                            "logging:/logs/" + str(args.submissionid) + "/" + "evaluation_output/"])
 
 
 def quitting(signo, _frame, submissionid=None, docker_image=None):

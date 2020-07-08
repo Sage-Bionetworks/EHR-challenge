@@ -209,7 +209,7 @@ def main(syn, args):
         open(output_fill, 'w').close()
     
     subprocess.check_call(["docker", "cp", output_dir + "/",
-                            "logging:/logs/" + str(args.submissionid) + "/"])
+                            "logging:/logs/" + str(args.submissionid) + "/" + "training_output/"])
 
     tar(output_dir, 'output_files.tar.gz')
 
